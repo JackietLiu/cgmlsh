@@ -36,7 +36,7 @@ public class TShHospImportEntity implements java.io.Serializable {
 	/**上传批号*/
 	@Excel(name="上传批号",width=20)
 	private java.lang.String auditno;
-	/**状态*/
+	/**区县审核状态*/
 	@Excel(name="状态",width=15,dicCode="thestatus")
 	private java.lang.String thestatus;
 	/**创建日期*/
@@ -51,15 +51,22 @@ public class TShHospImportEntity implements java.io.Serializable {
 	/**提交人*/
 	@Excel(name="提交人",width=15)
 	private java.lang.String commitname;
-	/**审核日期*/
-	@Excel(name="审核日期",width=15,format = "yyyy-MM-dd")
+	/**区县审核日期*/
+	@Excel(name="区县审核日期",width=15,format = "yyyy-MM-dd")
 	private java.util.Date auditdate;
-	/**审核人*/
-	@Excel(name="审核人",width=15)
+	/**区县审核人*/
+	@Excel(name="区县审核人",width=15)
 	private java.lang.String auditname;
-
-
-
+	/**委审核日期*/
+	@Excel(name="委审核日期",width=15,format = "yyyy-MM-dd")
+	private java.util.Date approvedate;
+	/**委审核人*/
+	@Excel(name="委审核人",width=15)
+	private java.lang.String approvename;
+	/**委审核状态*/
+	@Excel(name="状态",width=15,dicCode="thestatus")
+	private java.lang.String approvestatus;
+	private String regionid;
 	/**上传文件名*/
 	@Excel(name="上传文件名",width=30)
 	private java.lang.String filename;
@@ -378,5 +385,37 @@ public class TShHospImportEntity implements java.io.Serializable {
 	 */
 	public void setYear(java.lang.Integer year){
 		this.year = year;
+	}
+
+	public Date getApprovedate() {
+		return this.approvedate;
+	}
+
+	public void setApprovedate(Date approvedate) {
+		this.approvedate = approvedate;
+	}
+
+	public String getApprovename() {
+		return this.approvename;
+	}
+
+	public void setApprovename(String approvename) {
+		this.approvename = approvename;
+	}
+
+	public String getApprovestatus() {
+		return this.approvestatus;
+	}
+
+	public void setApprovestatus(String approvestatus) {
+		this.approvestatus = approvestatus;
+	}
+
+	public String getRegionid() {
+		return this.regionid;
+	}
+
+	public void setRegionid(String regionid) {
+		this.regionid = regionid;
 	}
 }

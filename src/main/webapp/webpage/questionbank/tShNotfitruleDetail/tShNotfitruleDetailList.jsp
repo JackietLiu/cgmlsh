@@ -1,3 +1,4 @@
+<!--thisisid: tShNotfitruleDetailList -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -34,10 +35,10 @@
 			</form>
 		</div>
 		<div class="toolbar-btn">
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="godetail()">
+			<%--<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="godetail()">
 				<i class="fa fa-search"></i>
 				<span>查看药品清单</span>
-			</button>
+			</button>--%>
 
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('查看','tShNotfitruleDetailController.do?goUpdate&load=detail','tShNotfitruleDetailList',768,500)">
 				<i class="fa fa-search"></i>
@@ -90,7 +91,7 @@ function getCustomerList(id,ruleid){
     });
 }
 
-function godetail() {
+/*function godetail() {
     var datagrid = $("#tShNotfitruleDetailList");
     var row = datagrid.datagrid("getSelected");
     if (row){
@@ -101,14 +102,14 @@ function godetail() {
         $.messager.alert('','请选择一条数据后操作','error');
     }
 
-}
+}*/
 //easyui-datagrid实例化
 function initDatagrid(){
 	var actionUrl = "tShNotfitruleDetailController.do?datagrid&field=id,createName,createDate,updateName,updateDate,hospid,auditno,ruleid,thedesc,memo,commonname,gg,enterprisename,drugform,detailsql,";
  	$('#tShNotfitruleDetailList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
-		title: '不符合规范明细',
+		title: '',
 		loadMsg: '数据加载中...',
 		fit:true,
 		fitColumns:true,

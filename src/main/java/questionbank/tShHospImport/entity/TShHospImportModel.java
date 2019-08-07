@@ -21,7 +21,7 @@ public class TShHospImportModel implements java.io.Serializable {
 
 
 	/**医院编号*/
-	private String hospnameshort ;
+	private String hospname;
 	private String hospid;
 	/**上传批号*/
 	@Excel(name="上传批号",width=20)
@@ -258,12 +258,12 @@ public class TShHospImportModel implements java.io.Serializable {
 	public void setYear(Integer year){
 		this.year = year;
 	}
-	@Column(name ="hospnameshort",nullable=true,length=10)
-	public String getHospnameshort() {
-		return hospnameshort;
+	@Column(name ="hospname",nullable=true,length=10)
+	public String getHospname() {
+		return hospname;
 	}
 
-	public void setHospnameshort(String hospnameshort) {
-		this.hospnameshort = hospnameshort;
+	public void setHospname(String hospname) {
+		this.hospname = hospname;
 	}
 }

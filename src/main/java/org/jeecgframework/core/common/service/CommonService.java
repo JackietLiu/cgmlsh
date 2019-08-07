@@ -30,11 +30,11 @@ import configtools.tbconfig.entity.TbConfigEntity;
 public interface CommonService {
 	/**
 	 * 获取所有数据库表
-	 * 
+	 *
 	 * @return
 	 */
 	public List<DBTable> getAllDbTableName();
-	
+
 	public Integer getAllDbTableSize();
 
 	public <T> Serializable save(T entity);
@@ -47,7 +47,7 @@ public interface CommonService {
 
 	/**
 	 * 根据实体名称和主键获取实体
-	 * 
+	 *
 	 * @param <T>
 	 * @param entityName
 	 * @param id
@@ -57,7 +57,7 @@ public interface CommonService {
 
 	/**
 	 * 根据实体名称和主键获取实体
-	 * 
+	 *
 	 * @param <T>
 	 * @param entityName
 	 * @param id
@@ -67,7 +67,7 @@ public interface CommonService {
 
 	/**
 	 * 根据实体名称和字段名称和字段值获取唯一记录
-	 * 
+	 *
 	 * @param <T>
 	 * @param entityClass
 	 * @param propertyName
@@ -75,17 +75,17 @@ public interface CommonService {
 	 * @return
 	 */
 	public <T> T findUniqueByProperty(Class<T> entityClass,
-			String propertyName, Object value);
+									  String propertyName, Object value);
 
 	/**
 	 * 按属性查找对象列表.
 	 */
 	public <T> List<T> findByProperty(Class<T> entityClass,
-			String propertyName, Object value);
+									  String propertyName, Object value);
 
 	/**
 	 * 加载全部实体
-	 * 
+	 *
 	 * @param <T>
 	 * @param entityClass
 	 * @return
@@ -94,7 +94,7 @@ public interface CommonService {
 
 	/**
 	 * 删除实体主键删除
-	 * 
+	 *
 	 * @param <T>
 	 * @param entities
 	 */
@@ -102,7 +102,7 @@ public interface CommonService {
 
 	/**
 	 * 删除实体集合
-	 * 
+	 *
 	 * @param <T>
 	 * @param entities
 	 */
@@ -110,7 +110,7 @@ public interface CommonService {
 
 	/**
 	 * 更新指定的实体
-	 * 
+	 *
 	 * @param <T>
 	 * @param pojo
 	 */
@@ -118,7 +118,7 @@ public interface CommonService {
 
 	/**
 	 * 通过hql 查询语句查找对象
-	 * 
+	 *
 	 * @param <T>
 	 * @param query
 	 * @return
@@ -127,7 +127,7 @@ public interface CommonService {
 
 	/**
 	 * 根据sql更新
-	 * 
+	 *
 	 * @param query
 	 * @return
 	 */
@@ -135,7 +135,7 @@ public interface CommonService {
 
 	/**
 	 * 根据sql查找List
-	 * 
+	 *
 	 * @param <T>
 	 * @param query
 	 * @return
@@ -144,22 +144,22 @@ public interface CommonService {
 
 	/**
 	 * 通过属性称获取实体带排序
-	 * 
+	 *
 	 * @param <T>
 	 * @param clas
 	 * @return
 	 */
 	public <T> List<T> findByPropertyisOrder(Class<T> entityClass,
-			String propertyName, Object value, boolean isAsc);
+											 String propertyName, Object value, boolean isAsc);
 
 	public <T> List<T> getList(Class clas);
 
 	public <T> T singleResult(String hql);
 
 	/**
-	 * 
+	 *
 	 * cq方式分页
-	 * 
+	 *
 	 * @param cq
 	 * @param isOffset
 	 * @return
@@ -168,66 +168,66 @@ public interface CommonService {
 
 	/**
 	 * 返回DataTableReturn模型
-	 * 
+	 *
 	 * @param cq
 	 * @param isOffset
 	 * @return
 	 */
 	public DataTableReturn getDataTableReturn(final CriteriaQuery cq,
-			final boolean isOffset);
+											  final boolean isOffset);
 
 	/**
 	 * 返回easyui datagrid模型
-	 * 
+	 *
 	 * @param cq
 	 * @param isOffset
 	 * @return
 	 */
 
 	public void getDataGridReturn(CriteriaQuery cq,
-			final boolean isOffset);
+								  final boolean isOffset);
 
 
 	/**
-	 * 
+	 *
 	 * hqlQuery方式分页
-	 * 
+	 *
 	 * @param cq
 	 * @param isOffset
 	 * @return
 	 */
 	public PageList getPageList(final HqlQuery hqlQuery,
-			final boolean needParameter);
+								final boolean needParameter);
 
 	/**
-	 * 
+	 *
 	 * sqlQuery方式分页
-	 * 
+	 *
 	 * @param cq
 	 * @param isOffset
 	 * @return
 	 */
 	public PageList getPageListBySql(final HqlQuery hqlQuery,
-			final boolean isToEntity);
+									 final boolean isToEntity);
 
 	public Session getSession();
 
 	public List findByExample(final String entityName,
-			final Object exampleEntity);
+							  final Object exampleEntity);
 
 	/**
 	 * 通过cq获取全部实体
-	 * 
+	 *
 	 * @param <T>
 	 * @param cq
 	 * @return
 	 */
 	public <T> List<T> getListByCriteriaQuery(final CriteriaQuery cq,
-			Boolean ispage);
+											  Boolean ispage);
 
 	/**
 	 * 文件上传
-	 * 
+	 *
 	 * @param request
 	 */
 	public <T> T uploadFile(UploadFile uploadFile);
@@ -236,7 +236,7 @@ public interface CommonService {
 
 	/**
 	 * 生成XML文件
-	 * 
+	 *
 	 * @param fileName
 	 *            XML全路径
 	 */
@@ -244,7 +244,7 @@ public interface CommonService {
 
 	/**
 	 * 解析XML文件
-	 * 
+	 *
 	 * @param fileName
 	 *            XML全路径
 	 */
@@ -254,18 +254,18 @@ public interface CommonService {
 
 	/**
 	 * 根据模型生成JSON
-	 * 
+	 *
 	 * @param all 全部对象
 	 * @param in 已拥有的对象
 	 * @param recursive 是否递归加载所有子节点
-     * @return List<ComboTree>
+	 * @return List<ComboTree>
 	 */
 	public List<ComboTree> ComboTree(List all, ComboTreeModel comboTreeModel, List in, boolean recursive);
 
 
-    /**
-     * 构建树形数据表
-	 * 
+	/**
+	 * 构建树形数据表
+	 *
 	 * @param all
 	 * @param treeGridModel
 	 * @return
@@ -274,7 +274,7 @@ public interface CommonService {
 
 	/**
 	 * 获取自动完成列表
-	 * 
+	 *
 	 * @param <T>
 	 * @return
 	 */
@@ -317,11 +317,11 @@ public interface CommonService {
 	 * 通过JDBC查找对象集合,带分页 使用指定的检索标准检索数据并分页返回数据
 	 */
 	public <T> List<T> findObjForJdbc(String sql, int page, int rows,
-			Class<T> clazz);
+									  Class<T> clazz);
 
 	/**
 	 * 使用指定的检索标准检索数据并分页返回数据-采用预处理方式
-	 * 
+	 *
 	 * @param criteria
 	 * @param firstResult
 	 * @param maxResults
@@ -329,7 +329,7 @@ public interface CommonService {
 	 * @throws DataAccessException
 	 */
 	public List<Map<String, Object>> findForJdbcParam(String sql, int page,
-			int rows, Object... objs);
+													  int rows, Object... objs);
 
 	/**
 	 * 使用指定的检索标准检索数据并分页返回数据For JDBC
@@ -338,13 +338,13 @@ public interface CommonService {
 
 	/**
 	 * 使用指定的检索标准检索数据并分页返回数据For JDBC-采用预处理方式
-	 * 
+	 *
 	 */
 	public Long getCountForJdbcParam(String sql, Object... objs);
 
 	/**
 	 * 通过hql 查询语句查找对象
-	 * 
+	 *
 	 * @param <T>
 	 * @param query
 	 * @return
@@ -352,7 +352,7 @@ public interface CommonService {
 	public <T> List<T> findHql(String hql, Object... param);
 
 	public <T> List<T> pageList(DetachedCriteria dc, int firstResult,
-			int maxResult);
+								int maxResult);
 
 	public <T> List<T> findByDetached(DetachedCriteria dc);
 
@@ -363,65 +363,65 @@ public interface CommonService {
 	 * @return
 	 */
 	public <T> List<T> executeProcedure(String procedureSql,Object... params);
-	
-	
+
+
 	//zczadd begin
-			/**
-			 * zczadd
-			 */
-				public void getDataGridReturnBySql(String sql1,String sql2,CriteriaQuery cq,
-						final boolean isOffset);
-				/**
-				 * zczadd
-				 * @param seq_name
-				 * @return
-				 */
-					public String getNextValueByName(String seq_name) ; 
-					/**
-					 * zczadd 
-					 * @param sql
-					 * @param clazz
-					 * @return
-					 */
-					public <T> List<T> findObjForJdbc(String sql , Class<T> clazz);
-					/**
-					 * zczadd
-					 * @param sql
-					 * @return
-					 */
-					public String sql2json(String sql);
-					
-					/**
-					 * zczadd
-					 * @param sql
-					 * @return
-					 */
-					public String getSingleValue(String sql);
-					/**
-					 * zczadd
-					 * @param sql
-					 * @return
-					 */
-					public String getConfigByCode(String code);
-					/**
-					 * zczadd
-					 * @param sql
-					 * @return
-					 */
-					public List<TbConfigEntity> getConfigByGroupflag(String groupflag);
-					/**
-					 * zczadd
-					 * @param sql
-					 * @return
-					 */
-					public String getConfigById(String id);
-					public void addcount(String funcid ) ;
-					
-					public <T> T findObjForJdbcSingle(String sql , Class<T> clazz);
-					 
-			//zczadd end
-	
-	
-	
+	/**
+	 * zczadd
+	 */
+	public void getDataGridReturnBySql(String sql1,String sql2,CriteriaQuery cq,
+									   final boolean isOffset);
+	/**
+	 * zczadd
+	 * @param seq_name
+	 * @return
+	 */
+	public String getNextValueByName(String seq_name) ;
+	/**
+	 * zczadd
+	 * @param sql
+	 * @param clazz
+	 * @return
+	 */
+	public <T> List<T> findObjForJdbc(String sql , Class<T> clazz);
+	/**
+	 * zczadd
+	 * @param sql
+	 * @return
+	 */
+	public String sql2json(String sql);
+
+	/**
+	 * zczadd
+	 * @param sql
+	 * @return
+	 */
+	public String getSingleValue(String sql);
+	/**
+	 * zczadd
+	 * @param sql
+	 * @return
+	 */
+	public String getConfigByCode(String code);
+	/**
+	 * zczadd
+	 * @param sql
+	 * @return
+	 */
+	public List<TbConfigEntity> getConfigByGroupflag(String groupflag);
+	/**
+	 * zczadd
+	 * @param sql
+	 * @return
+	 */
+	public String getConfigById(String id);
+	public void addcount(String funcid ) ;
+
+	public <T> T findObjForJdbcSingle(String sql , Class<T> clazz);
+
+	//zczadd end
+
+
+
 
 }

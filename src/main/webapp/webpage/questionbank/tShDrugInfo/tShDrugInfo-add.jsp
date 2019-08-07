@@ -1,3 +1,4 @@
+<!--thisisid: tShDrugInfo-add.jsp  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -44,7 +45,7 @@
 					采购序号：
 				</div>
 				<div class="col-md-9 col-sm-9 col-xs-9 bt-content">
-					<input name="buyno" type="text" class="form-control input-sm" maxlength="20"  ignore="ignore"  />
+					<input name="buyno" type="text" class="form-control input-sm" maxlength="50"  ignore="ignore"  />
 				</div>
 			</div>
 		</div>

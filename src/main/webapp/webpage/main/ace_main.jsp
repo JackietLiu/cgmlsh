@@ -814,7 +814,7 @@
   	    	});
     }
 
-    //个人信息弹出层回缩
+    //用户信息弹出层回缩
     function frameBodyClick(){ 
 		$(".user-menu").parent().removeClass("open");
 	}

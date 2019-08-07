@@ -196,7 +196,7 @@
 			<ul class="taskbar_start_menu">
 				<li cmd="favorite">
 					<div style="background: url(plug-in/login/images/exit.png) no-repeat left center;padding-left:30px;"
-                         onclick="openwindow('用户信息','userController.do?userinfo')">个人信息</div>
+                         onclick="openwindow('用户信息','userController.do?userinfo')">用户信息</div>
 				</li>
 				<li cmd="favorite">
 					<div style="background: url(plug-in/login/images/exit.png) no-repeat left center;padding-left:30px;"

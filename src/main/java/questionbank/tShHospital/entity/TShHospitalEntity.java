@@ -83,6 +83,10 @@ public class TShHospitalEntity implements java.io.Serializable {
 	/**传真*/
 	@Excel(name="传真",width=15)
 	private String fax;
+	@Excel(name="所在区域",width = 15)
+	private String regionid;
+
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  地址
@@ -242,7 +246,7 @@ public class TShHospitalEntity implements java.io.Serializable {
 	 */
 	@Id
 	@GeneratedValue(generator = "paymentableGenerator")
-	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
+	@GenericGenerator(name = "paymentableGenerator", strategy = "assigned")
 
 	@Column(name ="ID",nullable=false,length=40)
 	public String getId(){
@@ -408,5 +412,13 @@ public class TShHospitalEntity implements java.io.Serializable {
 	 */
 	public void setVersionname(String versionname){
 		this.versionname = versionname;
+	}
+
+	public String getRegionid() {
+		return this.regionid;
+	}
+
+	public void setRegionid(String regionid) {
+		this.regionid = regionid;
 	}
 }

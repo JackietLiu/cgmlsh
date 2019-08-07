@@ -1,3 +1,4 @@
+<!--thisisid: tShDrugInfoJsList.jsp  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -109,6 +110,8 @@
 </div>
 
 <script>
+
+
 var tShDrugInfoJsListdictsData = {};
 $(function(){
 	var promiseArr = [];
@@ -134,11 +137,11 @@ $(function(){
 
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShDrugInfoJsController.do?datagrid&field=agencyname,agencyshortname,buyno,commonname,contractname,createDate,createName,drugclass,drugcodeent,drugform,drugmemo,enterprisename,gg,groupname,id,isactive,memo,minpcs,pkccz,place,rationnum,registerno,suppprice,tradename,updateDate,updateName,";
+	var actionUrl = "tShDrugInfoJsController.do?datagrid&field=hospid,hospname,agencyname,agencyshortname,buyno,commonname,contractname,createDate,createName,drugclass,drugcodeent,drugform,drugmemo,enterprisename,gg,groupname,id,isactive,memo,minpcs,pkccz,place,rationnum,registerno,suppprice,tradename,updateDate,updateName,";
  	$('#tShDrugInfoJsList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
-		title: '省导入药品目录',
+		title: '',
 		loadMsg: '数据加载中...',
 		fit:true,
 		fitColumns:false,
@@ -157,6 +160,12 @@ function initDatagrid(){
 		columns:[[
 			{field:'ck',checkbox:true}
 			,{
+				field : "hospname",
+				title : "医院名称",
+				width : 120,
+				sortable: true,
+			},
+			{
 				field : "agencyname",
 				title : "经销商全称",
 				width : 120,
@@ -191,6 +200,7 @@ function initDatagrid(){
 				title : "创建日期",
 				width : 120,
 				sortable: true,
+				hidden:true,
 				formatter : function(value, rec, index) {
 					return new Date().format('yyyy-MM-dd', value);
 				}
@@ -200,6 +210,7 @@ function initDatagrid(){
 				title : "创建人名称",
 				width : 120,
 				sortable: true,
+				hidden:true,
 			}
 			,{
 				field : "drugclass",
@@ -308,6 +319,7 @@ function initDatagrid(){
 				field : "updateDate",
 				title : "更新日期",
 				width : 120,
+				hidden:true,
 				sortable: true,
 				formatter : function(value, rec, index) {
 					return new Date().format('yyyy-MM-dd', value);
@@ -318,6 +330,7 @@ function initDatagrid(){
 				title : "更新人名称",
 				width : 120,
 				sortable: true,
+				hidden:true,
 			}
 			,{
 	            field: 'opt',title: '操作',width: 150,

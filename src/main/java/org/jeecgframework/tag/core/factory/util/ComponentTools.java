@@ -46,7 +46,6 @@ public class ComponentTools {
 				url = formatter.format(url, value.toArray());
 			}
 			if (url != null && dataGridUrl.getValue() == null) {
-
 				url = formatUrlPlus(url);
 			}
 			String exp = dataGridUrl.getExp();// 判断显示表达式

@@ -1,3 +1,4 @@
+<!--thisisid: tShDrugValueInfoList.jsp  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -131,7 +132,7 @@
         $('#tShDrugValueInfoList').datagrid({
             url:actionUrl,
             idField: 'id',
-            title: '一致性评价清单',
+            title: '',
             loadMsg: '数据加载中...',
             fit:true,
             fitColumns:false,

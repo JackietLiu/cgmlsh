@@ -83,14 +83,16 @@ public class TShHospitalController extends BaseController {
 		List<TShHospitalModel> modelList = systemService.findObjForJdbc(sql, TShHospitalModel.class);
 
 		for (TShHospitalModel list : modelList) {
-			String logopath =list.getLogofilename().substring(1, list.getLogofilename().length());
-			//System.out.print(logopath);
-			list.setLogofilename(logopath);
-			if(list.getHospid()==null){
+			if (list.getLogofilename() == null){
+
+			}else {
+				String logopath = list.getLogofilename().substring(1, list.getLogofilename().length());
+				list.setLogofilename(logopath);
+			}
+
+			if(list.getHospid() == null){
 				list.setHospid("");
 			}
-			System.out.print(list.getLogofilename());
-			System.out.println(list.getHospid());
 		}
 		request.setAttribute("infolist", modelList);
 		System.out.println(modelList.get(0).getHospid());
@@ -131,7 +133,7 @@ public class TShHospitalController extends BaseController {
 		this.tShHospitalService.getDataGridReturn(cq, true);
 		TagUtil.datagrid(response, dataGrid);
 	}
-	
+
 	/**
 	 * 删除医院信息
 	 * 
@@ -198,6 +200,7 @@ public class TShHospitalController extends BaseController {
 		AjaxJson j = new AjaxJson();
 		message = "医院信息添加成功";
 		try{
+			tShHospital.setId(tShHospital.getHospcode());
 			tShHospitalService.save(tShHospital);
 			systemService.addLog(message, Globals.Log_Type_INSERT, Globals.Log_Leavel_INFO);
 		}catch(Exception e){
@@ -225,7 +228,14 @@ public class TShHospitalController extends BaseController {
 		TShHospitalEntity t = tShHospitalService.get(TShHospitalEntity.class, tShHospital.getId());
 		try {
 			MyBeanUtils.copyBeanNotNull2Bean(tShHospital, t);
-			tShHospitalService.saveOrUpdate(t);
+			if (t.getId().equals(t.getHospcode())){
+				tShHospitalService.saveOrUpdate(t);
+			}else{
+				tShHospitalService.saveOrUpdate(t);
+				String upsql = "update t_sh_hospital set id='"+t.getHospcode()+"' where id='"+t.getId()+"'";
+				systemService.executeSql(upsql);
+			}
+
 			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
 		} catch (Exception e) {
 			e.printStackTrace();

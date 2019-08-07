@@ -113,7 +113,7 @@ public class TShDrugValueInfoNewEntity implements java.io.Serializable {
 	 *@return: java.lang.String  产品编号
 	 */
 
-	@Column(name ="BUYNO",nullable=true,length=20)
+	@Column(name ="BUYNO",nullable=true,length=50)
 	public java.lang.String getBuyno(){
 		return this.buyno;
 	}

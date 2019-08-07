@@ -1,8 +1,11 @@
+<!--thisisid: tShHospDrugListList  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
+
 <html>
 <head>
+
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>医院上传药品列表</title>
@@ -18,33 +21,48 @@
 		<table id="tShHospDrugListList"></table>  
 	</div>
 	<div id = "tShHospDrugListListToolbar">
-		<div class="easyui-panel toolbar-search" style="display:none" data-options="doSize:false">
+		<div class="easyui-panel toolbar-search" style="display:none; "
+
+			 data-options="doSize:true">
 			<form id="tShHospDrugListForm" onkeydown="if(event.keyCode==13){doSearch();return false;}">
-				<div class="seerch-div">
+				<div class="seerch-div" style="width: 20%;float:left">
 					<label>药品名称:</label>
-					<div class="search-control">
+					<div class="search-control"  >
 						<input class="dts search-inp" type="text" name="commonname" placeholder="请输入药品名称"/>
 					</div>
 				</div>
-				<div class="seerch-div">
+				<div class="seerch-div" style="width: 20%;float:left">
 					<label>厂家:</label>
 					<div class="search-control">
 						<input class="dts search-inp" type="text" name="enterprisename" placeholder="请输入厂家"/>
 					</div>
 				</div>
-				<div class="seerch-div">
-					<label>医院ID:</label>
+				<c:if test="${ empty hospid}">
+				<div class="seerch-div" style="width: 20%;float:left">
+					<label>医院名称:</label>
 					<div class="search-control">
-						<select name = "hospid" class="dts search-inp search-select"></select>
+						<%--<select name = "hospid" id="hospid" class="dts search-inp search-select"></select>--%>
+						<select name = "hospid" id="hospid" class="form-control dts search-inp search-select"></select>
+
 					</div>
 				</div>
-				<div class="seerch-div">
+				</c:if>
+				<div class="seerch-div"    style="width: 20%;float:left">
 					<label>导入批号:</label>
 					<div class="search-control">
 						<input class="dts search-inp" type="text" name="auditno" placeholder="请输入导入批号"/>
 					</div>
 				</div>
-				<div class="seerch-div">
+
+				<div class="seerch-div" style="width: 20%;float:left">
+					<label>范围:</label>
+					<div class="search-control">
+						<input name="scope" checked type="radio" value="0"/><label>全部</label>
+						<input name="scope"  type="radio" value="1"/><label>不在目录中</label>
+					</div>
+				</div>
+
+				<div class="seerch-div" style="width: 20%;float:left">
 					<label style="visibility:hidden">查询</label>
 					<div>
 					<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="doSearch()">
@@ -123,7 +141,7 @@ $(function(){
 	            $(this).pagination('loaded');
 	        }
 	    });
-		loadSearchFormDicts($("#tShHospDrugListForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院ID");
+		loadSearchFormDicts($("#tShHospDrugListForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院名称");
 	}).fail(function(){
 		console.log("i'm sorry!it's unkown error that i can't resolve as yet");
 	});
@@ -205,12 +223,14 @@ function ImportXls() {
 
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShHospDrugListController.do?datagrid&hospid=${hospid}&field=id,commonname,gg,pcs,enterprisename,drugform,inprice,innum,rationnum,updateName,updateDate,createDate,createName,hospid,auditno,buyno,";
+	var actionUrl = "tShHospDrugListController.do?datagrid&hospid=${hospid}&field=id,commonname,gg,pcs,enterprisename,drugform,inprice,innum,rationnum,updateName,updateDate,createDate,createName,hospid,auditno,buyno,registerno";
  	$('#tShHospDrugListList').datagrid({
-		url:actionUrl,
+		/*url:actionUrl,*/
+		url:"",
 		idField: 'id', 
 		title: '',
 		loadMsg: '数据加载中...',
+
 		fit:true,
 		fitColumns:false,
 		striped:true,
@@ -233,6 +253,12 @@ function initDatagrid(){
 				width : 120,
 				sortable: true,
 				hidden:true,
+			}
+			,{
+				field : "registerno",
+				title : "批准文号",
+				width : 120,
+				sortable: true,
 			}
 			,{
 				field : "commonname",
@@ -368,8 +394,20 @@ function reloadTable() {
 }
 //easyui-datagrid搜索
 function doSearch(){
+	var thescope = $('input:radio[name="scope"]:checked').val();
+
+	var hospsele= $("#hospid").val();
+
+	var hospid="${hospid}" ;
+	var thescope = $('input:radio[name="scope"]:checked').val();
+	if(hospid=="" && hospsele ==""){
+		$.messager.alert('提示',"请先选择一家医院,再进行检索!");
+		return;
+	}
+	//zcz changed
 	var queryParams = $('#tShHospDrugListList').datagrid('options').queryParams;
-	var actionUrl = "tShHospDrugListController.do?datagrid&hospid=${hospid}&field=id,commonname,gg,pcs,enterprisename,drugform,inprice,innum,rationnum,updateName,updateDate,createDate,createName,hospid,auditno,buyno,";
+	var actionUrl = "tShHospDrugListController.do?datagrid&thescope="+thescope+"&hospid=${hospid}&field=id,commonname,gg,pcs,enterprisename,drugform,inprice,innum,rationnum,updateName,updateDate,createDate,createName,hospid,auditno,buyno,registerno,";
+	//alert(actionUrl);
 	$('#tShHospDrugListForm').find(':input').each(function() {
 		var paramName = $(this).attr('name');
 		if(!!paramName){
@@ -385,7 +423,8 @@ function doSearch(){
 	
     $('#tShHospDrugListList').datagrid({
         url: actionUrl,
-        pageNumber: 1
+        pageNumber: 1,
+
     });
 }
 //easyui-datagrid重置搜索

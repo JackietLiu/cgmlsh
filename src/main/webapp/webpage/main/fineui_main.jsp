@@ -193,8 +193,8 @@
 				
 				<ul class="header-dropdown-menu" style="padding-right:4px">
 					<li>
-						<a href="javascript:openwindow('个人信息','userController.do?userinfo')">
-							个人信息
+						<a href="javascript:openwindow('用户信息','userController.do?userinfo')">
+							用户信息
 						</a>
 					</li>
 					<li>
@@ -213,8 +213,8 @@
 
 				<ul class="header-dropdown-menu" style="padding-right:4px">
 					<li>
-						<a href="javascript:openwindow('个人信息','userController.do?userinfo')">
-							个人信息
+						<a href="javascript:openwindow('用户信息','userController.do?userinfo')">
+							用户信息
 						</a>
 					</li>
 					<li>

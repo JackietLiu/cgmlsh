@@ -1,3 +1,4 @@
+<!--thisisid: tShHospital-add  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -70,7 +71,14 @@
 			</div>
 		</div>
 	</div>
-
+	 <div class="form-group">
+		 <label for="regionid" class="col-sm-3 control-label">区域：</label>
+		 <div class="col-sm-7">
+			 <div class="input-group" style="width:100%">
+				 <t:dictSelect field="regionid" type="list" extendJson="{class:'form-control input-sm'}"   dictTable="t_s_region" dictField="id" dictText="name" dictCondition="where ((pid = 114) or (id = 114))"  hasLabel="false"  title="区域"></t:dictSelect>
+			 </div>
+		 </div>
+	 </div>
 	 <div class="form-group">
 		 <label for="tel" class="col-sm-3 control-label">电话：</label>
 		 <div class="col-sm-7">

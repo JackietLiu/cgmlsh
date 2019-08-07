@@ -23,6 +23,8 @@ public class TShRuleResultModel implements java.io.Serializable {
 	/**医院编号*/
 	private String rulename ;
 	private Long thecount;
+	private String resultclass;
+	private String resultdesc;
 	/**主键*/
 	private String id;
 
@@ -64,8 +66,19 @@ public class TShRuleResultModel implements java.io.Serializable {
 	}
 
 
+	public String getResultclass() {
+		return resultclass;
+	}
 
+	public void setResultclass(String resultclass) {
+		this.resultclass = resultclass;
+	}
 
+	public String getResultdesc() {
+		return resultdesc;
+	}
 
-
+	public void setResultdesc(String resultdesc) {
+		this.resultdesc = resultdesc;
+	}
 }

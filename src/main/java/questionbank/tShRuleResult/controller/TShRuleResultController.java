@@ -68,6 +68,13 @@ public class TShRuleResultController extends BaseController {
 	 */
 	@RequestMapping(params = "list")
 	public ModelAndView list(HttpServletRequest request) {
+		String hospid="";
+		if(request.getSession().getAttribute("hospid")!=null){
+			hospid=(String)request.getSession().getAttribute("hospid");
+		}
+
+		request.setAttribute("hospid",hospid);
+
 		return new ModelAndView("questionbank/tShRuleResult/tShRuleResultList");
 	}
 	/**
@@ -94,8 +101,13 @@ public class TShRuleResultController extends BaseController {
 		//查询条件组装器
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShRuleResult, request.getParameterMap());
 		try{
-		//自定义追加查询条件
-		
+			//自定义追加查询条件
+			String usertype = ResourceUtil.getSessionUser().getUserType();
+			if ("1".equals(usertype)){
+				String hospid = (String) request.getSession().getAttribute("hospid");
+				cq.eq("hospid",hospid);
+			}
+
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

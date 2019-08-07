@@ -21,10 +21,12 @@ import org.apache.batik.transcoder.TranscoderOutput;
 import org.apache.batik.transcoder.image.JPEGTranscoder;
 import org.apache.batik.transcoder.image.PNGTranscoder;
 import org.apache.fop.svg.PDFTranscoder;
+import org.jeecgframework.core.annotation.JAuth;
 import org.jeecgframework.core.common.controller.BaseController;
 import org.jeecgframework.core.common.hibernate.qbc.CriteriaQuery;
 import org.jeecgframework.core.common.model.json.DataGrid;
 import org.jeecgframework.core.common.model.json.Highchart;
+import org.jeecgframework.core.enums.Permission;
 import org.jeecgframework.core.util.DateUtils;
 import org.jeecgframework.core.util.MutiLangUtil;
 import org.jeecgframework.core.util.StringUtil;
@@ -48,6 +50,7 @@ import org.springframework.web.servlet.ModelAndView;
  * @author 张代浩
  * 
  */
+@JAuth(auth = Permission.SKIP_AUTH)
 @Controller
 @RequestMapping("/logController")
 public class LogController extends BaseController {
@@ -86,7 +89,9 @@ public class LogController extends BaseController {
 	 * @param response
 	 * @param dataGrid
 	 */
+
 	@RequestMapping(params = "datagrid")
+	@JAuth(auth = Permission.SKIP_AUTH)
 	public void datagrid(HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
 		CriteriaQuery cq = new CriteriaQuery(TSLog.class, dataGrid);
 		

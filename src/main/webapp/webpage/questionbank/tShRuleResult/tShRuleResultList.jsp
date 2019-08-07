@@ -1,3 +1,4 @@
+<!--thisisid: tShRuleResultList -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -17,14 +18,34 @@
 	<div id = "tShRuleResultListToolbar">
 		<div class="easyui-panel toolbar-search" style="display:none" data-options="doSize:false">
 			<form id="tShRuleResultForm" onkeydown="if(event.keyCode==13){doSearch();return false;}">
+
 				<div class="seerch-div">
-					<label style="visibility:hidden">查询</label>
+					<label>上传批号:</label>
+					<div class="search-control">
+						<input class="dts search-inp" type="text" name="auditno" placeholder="请输入上传批号"/>
+					</div>
+				</div>
+
+
+				<c:if test="${ empty hospid}">
+				<div class="seerch-div">
+					<label>医院名称:</label>
+					<div class="search-control">
+						<select name = "hospid" class="dts search-inp search-select"></select>
+					</div>
+				</div>
+				</c:if>
+
+
+				<div class="seerch-div">
+					<label style="visibility:visible">查询</label>
+
 					<div>
 					<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="doSearch()">
 						<i class="fa fa-search"></i>
 						<span>查询</span>
 					</button>
-					
+
 					<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="resetSearch()">
 						<i class="fa fa-refresh"></i>
 						<span>重置</span>
@@ -33,6 +54,9 @@
 				</div>
 			</form>
 		</div>
+
+
+
 		<div class="toolbar-btn">
 
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('查看','tShRuleResultController.do?goUpdate&load=detail','tShRuleResultList',768,500)">
@@ -45,10 +69,10 @@
 				<span>导出</span>
 			</button>
 
-			<%--<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="$('.toolbar-search').slideToggle(function(){$('#tShRuleResultList').datagrid('resize');});">--%>
-				<%--<i class="fa fa-arrow-circle-left"></i>--%>
-				<%--<span>检索</span>--%>
-			<%--</button>--%>
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="$('.toolbar-search').slideToggle(function(){$('#tShRuleResultList').datagrid('resize');});">
+				 <i class="fa fa-arrow-circle-left"></i>
+				 <span>检索</span>
+			</button>
 		</div>
 	</div>
 </div>
@@ -57,8 +81,9 @@
 var tShRuleResultListdictsData = {};
 $(function(){
 	var promiseArr = [];
-	initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_rule_info","rulename");
 	initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_hospital","hospnameshort");
+	initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_rule_info","rulename");
+	/*initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_hospital","hospnameshort");*/
 	$.when.apply(null,promiseArr).done(function(){
     	initDatagrid();
 		$('#tShRuleResultList').datagrid('getPager').pagination({
@@ -74,6 +99,7 @@ $(function(){
 	            $(this).pagination('loaded');
 	        }
 	    });
+		loadSearchFormDicts($("#tShRuleResultForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院编号");
 	}).fail(function(){
 		console.log("i'm sorry!it's unkown error that i can't resolve as yet");
 	});

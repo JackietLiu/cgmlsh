@@ -525,7 +525,7 @@ public class UserController extends BaseController {
         Short[] userstate = new Short[]{Globals.User_Normal, Globals.User_ADMIN, Globals.User_Forbidden};
         cq.in("status", userstate);
         cq.eq("deleteFlag", Globals.Delete_Normal);
-        cq.eq("userType", Globals.USER_TYPE_SYSTEM);//用户列表不显示接口类型的用户
+        //cq.eq("userType", Globals.USER_TYPE_SYSTEM);//用户列表不显示接口类型的用户
         
         String orgIds = request.getParameter("orgIds");
         List<String> orgIdList = extractIdListByComma(orgIds);
@@ -763,6 +763,7 @@ public class UserController extends BaseController {
 			users.setMobilePhone(user.getMobilePhone());
 			users.setDevFlag(user.getDevFlag());
 			users.setRealName(user.getRealName());
+			users.setUserType(user.getUserType());
 			users.setStatus(Globals.User_Normal);
 			users.setActivitiSync(user.getActivitiSync());
 			this.userService.saveOrUpdate(users, orgid.split(","), roleid.split(","));

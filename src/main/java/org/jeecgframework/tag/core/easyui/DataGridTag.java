@@ -3270,7 +3270,13 @@ public class DataGridTag extends TagSupport {
   
 	public String getNoAuthOperButton(){
 		StringBuffer sb = new StringBuffer();
+		//zcz add begin
+		if(ResourceUtil.getSessionUser()==null){
+		    return "";
+        }
+        //zcz add end
 		if(ResourceUtil.getSessionUser().getUserName().equals("admin")|| !Globals.BUTTON_AUTHORITY_CHECK){
+
 		}else{
 			Set<String> operationCodes = (Set<String>) super.pageContext.getRequest().getAttribute(Globals.OPERATIONCODES);
 			if (null!=operationCodes) {

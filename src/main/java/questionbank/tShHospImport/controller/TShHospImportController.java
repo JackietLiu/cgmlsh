@@ -1,4 +1,6 @@
 package questionbank.tShHospImport.controller;
+import questionbank.tBaConsortiumHospital.entity.TBaConsortiumHospitalEntity;
+import questionbank.tShHospDrugList.entity.TShHospDrugListEntity;
 import questionbank.tShHospImport.entity.TShHospImportEntity;
 import questionbank.tShHospImport.service.TShHospImportServiceI;
 
@@ -76,20 +78,33 @@ public class TShHospImportController extends BaseController {
 		String message = "审核成功!";
 		AjaxJson j = new AjaxJson();
 		String hospid=request.getParameter("hospid");
+
 		String auditno=request.getParameter("auditno");
 		String sql="select * from t_sh_rule_info where id not in ( " +
 				" select ruleid  from t_sh_rule_hosplevel_exclude  a join t_sh_hospital b  " +
 				" on  a.hosplevel=b.hosplevel where  b.id='"+ hospid + "' and a.isactive='1' " +
 				" ) and isactive='1' order by sortindex" ;
-		List<TShRuleInfoEntity> listrule=tShHospImportService.findObjForJdbc(sql,TShRuleInfoEntity.class);
+		List<TShRuleInfoEntity> listrule = tShHospImportService.findObjForJdbc(sql,TShRuleInfoEntity.class);
 		//String sqlhosplevel="select hosplevel from t_sh_hospital where id='" + hospid +"'" ;
 		//String thelevel=tShHospImportService.getSingleValue(sqlhosplevel);
 		for (int i=0;i<listrule.size();i++){
 			TShRuleInfoEntity item=listrule.get(i);
-			String procsql=item.getRulesql();
-			String roleid=item.getId();
-			String sqlproc = "{call " +procsql+"('"+hospid +"','"+roleid +"','"+auditno +"')}";
-			tShHospImportService.executeProcedure(sqlproc);
+			String procsql = item.getRulesql();
+			String roleid = item.getId();
+			String sqlproc = "";
+			if (item.getSortindex() < 500){
+				sqlproc  = "{call " +procsql+"('"+hospid +"','"+roleid +"','"+auditno +"')}";
+				tShHospImportService.executeProcedure(sqlproc);
+			}else {
+				List<TBaConsortiumHospitalEntity> chs = systemService.findByProperty(TBaConsortiumHospitalEntity.class,"hospid",hospid);
+				if(chs.size() > 0){
+					List<TShHospDrugListEntity> hds = systemService.findByProperty(TShHospDrugListEntity.class,"hospid",chs.get(0).getHeadhospid());
+					sqlproc  = "{call " +procsql+"('"+hospid +"','"+chs.get(0).getHeadhospid() +"','"+roleid +"','"+auditno +"','"+hds.get(0).getAuditno() +"')}";
+					tShHospImportService.executeProcedure(sqlproc);
+				}
+
+			}
+
 		}
 		String sql2="update t_sh_hosp_import set thestatus='20' where hospid='" +hospid+"' and auditno='" +auditno+"'"  ;
 		tShHospImportService.updateBySqlString(sql2);
@@ -326,6 +341,7 @@ public class TShHospImportController extends BaseController {
 			params.setNeedSave(true);
 			try {
 				List<TShHospImportEntity> listTShHospImportEntitys = ExcelImportUtil.importExcel(file.getInputStream(),TShHospImportEntity.class,params);
+
 				for (TShHospImportEntity tShHospImport : listTShHospImportEntitys) {
 					tShHospImportService.save(tShHospImport);
 				}
@@ -343,6 +359,5 @@ public class TShHospImportController extends BaseController {
 		}
 		return j;
 	}
-	
 	
 }

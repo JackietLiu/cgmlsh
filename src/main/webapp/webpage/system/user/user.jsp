@@ -124,7 +124,7 @@
 			<td class="value" nowrap>
                 <input id="roleid" name="roleid" type="hidden" value="${id}"/>
                 <input name="roleName" id="roleName" class="inputxt" value="${roleName }" readonly="readonly" datatype="*" />
-                <input name="roleName22" id="roleName22" class="inputxt"   />
+               <%-- <input name="roleName22" id="roleName22" class="inputxt"   />--%>
                 <t:choose hiddenName="roleid" hiddenid="id" textname="roleName" inputTextname="roleName" url="userController.do?roles" name="roleList" icon="icon-search" title="common.role.list" isclear="true" ></t:choose>
                 <span class="Validform_checktip"><t:mutiLang langKey="role.muti.select"/></span>
             </td>
@@ -154,6 +154,13 @@
             <td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.common.dev"/>: </label></td>
             <td class="value">
                 <t:dictSelect id="devFlag" field="devFlag" typeGroupCode="dev_flag" hasLabel="false" defaultVal="${user.devFlag==null?'0':(user.devFlag)}" type="radio"></t:dictSelect>
+                <span class="Validform_checktip"></span>
+            </td>
+        </tr>
+        <tr>
+            <td align="right"><label class="Validform_label"> <t:mutiLang langKey="common.user.type"/>: </label></td>
+            <td class="value">
+                <t:dictSelect field="userType" typeGroupCode="user_type" hasLabel="false" defaultVal="${user.userType}" type="list"></t:dictSelect>
                 <span class="Validform_checktip"></span>
             </td>
         </tr>

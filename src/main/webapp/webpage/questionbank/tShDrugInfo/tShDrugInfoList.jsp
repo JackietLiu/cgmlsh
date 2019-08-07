@@ -1,3 +1,4 @@
+<!--thisisid: tShDrugInfoList.jsp  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -33,6 +34,12 @@
 					<label>通用名:</label>
 					<div class="search-control">
 						<input class="dts search-inp" type="text" name="commonname" placeholder="请输入通用名"/>
+					</div>
+				</div>
+				<div class="seerch-div">
+					<label>国家基药:</label>
+					<div class="search-control">
+						<input class="dts search-inp" type="text" name="drugmemo" placeholder="请输入基药二字"/>
 					</div>
 				</div>
 				<div class="seerch-div">
@@ -118,7 +125,7 @@ $(function(){
 		$('#tShDrugInfoList').datagrid('getPager').pagination({
 	        beforePageText: '',
 	        afterPageText: '/{pages}',
-	        displayMsg: '{from}-{to}共 {total}条',
+	        displayMsg: '{from}/{to}共 {total}条',
 	        showPageList: true,
 	        showRefresh: true
 	    });
@@ -155,6 +162,11 @@ function initDatagrid(){
 		sortOrder:'desc',
 		toolbar: '#tShDrugInfoListToolbar',
 		frozenColumns:[[]],
+		rowStyler:function(index,row) {
+			if (row.drugmemo.indexOf("国基") != -1) {
+				return 'background-color:#45b97c;color:#fff;font-size:14px';
+			}
+		},
 		columns:[[
 			{field:'ck',checkbox:true}
 			,{
@@ -303,8 +315,7 @@ function initDatagrid(){
 				field : "drugmemo",
 				title : "产品备注",
 				width : 120,
-				sortable: true,
-				hidden:true,
+				sortable: true
 			}
 			,{
 				field : "registerno",

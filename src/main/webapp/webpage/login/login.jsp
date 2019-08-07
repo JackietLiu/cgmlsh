@@ -9,8 +9,8 @@
   
   session.setAttribute("showvalid",ResourceUtil.getConfigByName("isshowvalidcode").trim());
   session.setAttribute("isdebugmode",ResourceUtil.getConfigByName("isdebugmode").trim());
-  session.setAttribute("debugmodeusername",ResourceUtil.getConfigByName("debugmodeusername").trim());
-  session.setAttribute("debugmodepwd",ResourceUtil.getConfigByName("debugmodepwd").trim());
+/*  session.setAttribute("debugmodeusername",ResourceUtil.getConfigByName("debugmodeusername").trim());
+  session.setAttribute("debugmodepwd",ResourceUtil.getConfigByName("debugmodepwd").trim());*/
   
 %>
 <!DOCTYPE html>
@@ -53,6 +53,8 @@
   <div class="main-content">
     <div class="row">
         <div class="center">
+            <br> <br> <br> <br>
+
             <h1 id="id-text2" class="grey">
                 <!--  <i class="ace-icon fa fa-leaf green"></i> -->
                 <t:mutiLang langKey="sys.loginhead"/>
@@ -87,13 +89,13 @@
                   <div class="space-6"></div>
                       <label class="block clearfix">
 								<span class="block input-icon input-icon-right">
-									<input type="text"  name="userName" iscookie="true" class="form-control" placeholder="请输入用户名"  id="userName" value="admin"/>
+									<input type="text"  name="userName" iscookie="true" class="form-control" placeholder="请输入用户名"  id="userName"/>
 									<i class="ace-icon fa fa-user"></i>
 								</span>
                       </label>
                       <label class="block clearfix">
 								<span class="block input-icon input-icon-right">
-									<input type="password" name="password" class="form-control" placeholder="请输入密码" id="password" value="123456"/>
+									<input type="password" name="password" class="form-control" placeholder="请输入密码" id="password"/>
 									<i class="ace-icon fa fa-lock"></i>
 								</span>
                       </label>
@@ -128,7 +130,7 @@
                           <i class="ace-icon fa fa-key"></i>
                           <span class="bigger-110" >登录</span>
                         </button>
-                        <a href="loginController.do?goResetPwdMail" class="btn btn-link">忘记密码 ?</a>
+                        <a href="#" class="btn btn-link">如忘记密码请找管理员重置</a>
                       </div>
                       <div class="space-4"></div>
 

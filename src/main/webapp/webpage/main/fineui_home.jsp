@@ -46,6 +46,9 @@
         .flot-chart{
             height:400px;
         }
+        .topspan{
+            margin-left:20px;
+        }
         /*  .top-navigation .wrapper.wrapper-content{padding:20px 5px !important;}
          .container {
               width:99% !important; margin:10px;
@@ -73,49 +76,11 @@
 </head>
 <body class="gray-bg">
 <div class="wrapper wrapper-content">
-
-    <%--		<div class="row">
-                //功能列表
-                <div class="col-md-1 col-cs-2 col-xs-4">
-                    <div class="widget  p-lg text-center" style="background: #cfa972;">
-                        <div><!-- class="ibtn" -->
-                            <i class="iconfont icon-zhihuizhongxin" style="font-size: 30px;"></i>
-                            <h3 class="font-bold no-margins"></h3>
-                            <small>功能1111</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1 col-cs-2 col-xs-4">
-                    <div class="widget  p-lg text-center" style="background: #f29b76;">
-                        <div>
-                            <i class="iconfont icon-yujing" style="font-size: 30px;"></i>
-                            <h3 class="font-bold no-margins"></h3>
-                            <small>功能2</small>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-1 col-cs-2 col-xs-4">
-                    <div class="widget  p-lg text-center" style="background: #88abda;">
-                        <div>
-                            <i class="iconfont icon-jixiao" style="font-size: 30px;"></i>
-                            <h3 class="font-bold no-margins"></h3>
-                            <small>功能6</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1 col-cs-2 col-xs-4">
-                    <div class="widget  p-lg text-center" style="background: #8c97cb;">
-                        <div>
-                            <i class="iconfont icon-fangdajing-copy" style="font-size: 30px;"></i>
-                            <h3 class="font-bold no-margins"></h3>
-                            <small>功能7</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
---%>
-
+    <div class="alert alert-warning">
+        <span>已提交：</span><a><label id="submited" class="label label-success"></label></a>
+        <span class="topspan">未提交：</span><a><label id="unsubmit" class="label label-danger"></label></a>
+        <span class="topspan">已审核：</span><a><label id="audited" class="label label-success"></label></a>
+    </div>
     <div class="row">
         <div class="col-sm-5">
             <div class="ibox float-e-margins">
@@ -141,20 +106,12 @@
                         <c:forEach items="${hospimportlist}" var="m">
                             <tr>
                                 <td>
-                                    <span class="label label-warning">${m.hospnameshort}</span>
+                                    <span class="label label-warning">${m.hospname}</span>
                                 </td>
                                 <td>${m.commitdate}</td>
                                 <td class="text-navy">${m.thestatustext}</td>
                             </tr>
                         </c:forEach>
-
-                        <%-- <tr>
-                             <td>
-                                 <span class="label label-warning">类型5</span></td>
-                             <td>任务2</td>
-                             <td class="text-navy">7</td></tr>
-                         <tr>--%>
-
                         </tbody>
                     </table>
 
@@ -170,35 +127,6 @@
                     </div>
                 </div>
                 <div class="ibox-content"  style="height: 400px;">
-                    <%-- <table class="table table-hover no-margins">
-                         <thead>
-                         <tr>
-                             <th>规则名称</th>
-                             <th>数量</th>
-
-                         </tr>
-                         </thead>
-                         <tbody>
-
-                         <c:forEach items="${theclass}" var="m">
-                             <tr>
-                                 <td>
-                                     <span class="  ">${m.rulename}</span>
-                                 </td>
-                                 <td>${m.thecount}</td>
-
-                             </tr>
-                         </c:forEach>
-
-                         &lt;%&ndash; <tr>
-                              <td>
-                                  <span class="label label-warning">类型5</span></td>
-                              <td>任务2</td>
-                              <td class="text-navy">7</td></tr>
-                          <tr>&ndash;%&gt;
-
-                         </tbody>
-                     </table>--%>
                     <div id="echart_div"  style="height: 400px;">
 
                     </div>
@@ -207,8 +135,41 @@
         </div>
 
     </div>
+    <div class="row">
+        <div class="col-sm-5">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>分散合同统计</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content" style="height: 400px;">
+                    <table class="table table-hover no-margins">
+                        <thead>
+                        <tr>
+                            <th>医院名称</th>
+                            <th>数量</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-    <div class="wrapper wrapper-content">
+                        <c:forEach items="${jslist}" var="m">
+                            <tr>
+                                <td>
+                                    ${m.hospname}
+                                </td>
+                                <td><span class="label label-warning">${m.drugcount}</span></td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
     </div>
     <!-- 全局js -->
     <script src="plug-in/hplus/js/jquery.min.js?v=2.1.4"></script>
@@ -230,8 +191,16 @@
             });
             var chart = echarts.init(document.getElementById('echart_div'));
             var jsondata = ${theclass};
-            /*jsondata=JSON.parse(jsondata);*/
-           /* var data=jsondata[0].data;*/
+            /*获取提交、未提交和已审核的数据 begin*/
+            var counts = ${counts};
+            var submited =parseInt(counts[0].submited);//已提交
+            var hosptotal = parseInt(counts[0].hosptotal);//医院总数
+            var audited = parseInt(counts[0].audited);//已审核
+            var audited2 = parseInt(counts[0].audited2);//已备份
+            $("#submited").html(submited);
+            $("#unsubmit").html(hosptotal-submited-audited-audited2);
+            $("#audited").html(audited2+audited);
+            /*end*/
             var xAxisData=[];
             var seriesData=[];
             for(var i in jsondata){

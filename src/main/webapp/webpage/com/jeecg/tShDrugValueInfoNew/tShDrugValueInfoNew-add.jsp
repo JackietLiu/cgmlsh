@@ -26,7 +26,7 @@
 		<label for="buyno" class="col-sm-3 control-label">产品编号：</label>
 		<div class="col-sm-7">
 			<div class="input-group" style="width:100%">
-				<input id="buyno" name="buyno" type="text" maxlength="20" class="form-control input-sm" placeholder="请输入产品编号"  ignore="ignore" />
+				<input id="buyno" name="buyno" type="text" maxlength="50" class="form-control input-sm" placeholder="请输入产品编号"  ignore="ignore" />
 			</div>
 		</div>
 	</div>

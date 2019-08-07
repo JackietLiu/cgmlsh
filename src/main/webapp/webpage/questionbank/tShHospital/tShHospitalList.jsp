@@ -1,3 +1,4 @@
+<!--thisisid: tShHospitalList -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -52,12 +53,16 @@
 			</form>
 		</div>
 		<div class="toolbar-btn">
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="add('录入','tShHospitalController.do?goAdd','tShHospitalList',768,500)">
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs"
+					operationCode="add"
+					onclick="add('录入','tShHospitalController.do?goAdd','tShHospitalList',768,500)">
 				<i class="fa fa-plus"></i>
 				<span>录入</span>
 			</button>
 			
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('编辑','tShHospitalController.do?goUpdate','tShHospitalList',768,500)">
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs"
+
+					onclick="update('编辑','tShHospitalController.do?goUpdate','tShHospitalList',768,500)">
 				<i class="fa fa-edit"></i>
 				<span>编辑</span>
 			</button>
@@ -67,12 +72,16 @@
 				<span>查看</span>
 			</button>
 
-            <button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="added()">
+            <button type="button"
+					operationCode="match"
+					class="tool-btn tool-btn-default tool-btn-xs" onclick="added()">
                <i class="fa fa-plus"></i>
                <span>关联用户</span>
             </button>
 
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="deleteALLSelect('批量删除','tShHospitalController.do?doBatchDel','tShHospitalList',null,null)">
+			<button type="button"
+					operationCode="batchdelete"
+					class="tool-btn tool-btn-default tool-btn-xs" onclick="deleteALLSelect('批量删除','tShHospitalController.do?doBatchDel','tShHospitalList',null,null)">
 				<i class="fa fa-trash"></i>
 				<span>批量删除</span>
 			</button>
@@ -106,6 +115,7 @@ $(function(){
 	var promiseArr = [];
 	initDictByCode(tShHospitalListdictsData,"hosplevel",promiseArr,"","");
 	initDictByCode(tShHospitalListdictsData,"isactive",promiseArr,"","");
+	initDictByCode(tShHospitalListdictsData,"id",promiseArr,"t_s_region","name");
 	$.when.apply(null,promiseArr).done(function(){
     	initDatagrid();
 		$('#tShHospitalList').datagrid('getPager').pagination({
@@ -129,7 +139,7 @@ $(function(){
 
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,";
+	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,";
  	$('#tShHospitalList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
@@ -190,6 +200,16 @@ function initDatagrid(){
 				width : 160,
 				halign : "center",
 				sortable: true,
+			},
+			{
+				field : "regionid",
+				title : "区域",
+				width : 60,
+				align : "center",
+				sortable: true,
+				formatter : function(value, rec, index) {
+					return listDictFormat(value,"id","t_s_region");
+				}
 			},{
 				field : "createDate",
 				title : "创建日期",
@@ -302,7 +322,7 @@ function initDatagrid(){
 	                    return '';
 	                }
 	                var href = '';
-	                href += "<a href='#'   class='ace_button'  onclick=delObj('tShHospitalController.do?doDel&id=" + rec.id + "','tShHospitalList')>  <i class=' fa fa-trash-o'></i> ";
+	                href += "<a href='#' class='ace_button'  onclick=delObj('tShHospitalController.do?doDel&id=" + rec.id + "','tShHospitalList')>  <i class=' fa fa-trash-o'></i> ";
 	                href += "删除</a>&nbsp;";
 	                return href;
 	            }
@@ -329,7 +349,7 @@ function reloadTable() {
 //easyui-datagrid搜索
 function doSearch(){
 	var queryParams = $('#tShHospitalList').datagrid('options').queryParams;
-	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,";
+	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,";
 	$('#tShHospitalForm').find(':input').each(function() {
 		var paramName = $(this).attr('name');
 		if(!!paramName){

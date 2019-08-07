@@ -1,3 +1,4 @@
+<!--thisisid: tShHospImportList  -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -154,6 +155,19 @@ function initDatagrid(){
 		sortOrder:'desc',
 		toolbar: '#tShHospImportListToolbar',
 		frozenColumns:[[]],
+		rowStyler:function(index,row){
+			if (row.thestatus=='0'){
+				return 'background-color:yellow;color:black;font-weight:bold;';
+			};
+			if (row.thestatus=='10'){
+				return 'background-color:green;color:black;font-weight:bold;';
+			};
+
+			if (row.thestatus>'10'){
+				return 'background-color:white;color:black;font-weight:bold;';
+			}
+		},
+
 		columns:[[
 			{field:'ck',checkbox:true},
 			{
@@ -482,7 +496,7 @@ function func_audit(){
 				dataType:"json",
 				success: function(data){
 					$.messager.alert('提信息示', data.msg,"info");
-
+					$("#tShHospImportList" ).datagrid("reload");
 				}
 			})
 

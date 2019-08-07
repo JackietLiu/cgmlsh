@@ -1,4 +1,6 @@
 package questionbank.tShNotfitruleDetail.controller;
+import org.jeecgframework.core.annotation.JAuth;
+import org.jeecgframework.core.enums.Permission;
 import questionbank.tShHospDrugList.entity.TShHospDrugListEntity;
 import questionbank.tShHospDrugList.service.TShHospDrugListServiceI;
 import questionbank.tShNotfitruleDetail.entity.TShNotfitruleDetailEntity;
@@ -69,7 +71,9 @@ public class TShNotfitruleDetailController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(params = "list")
+	@JAuth(auth= Permission.SKIP_AUTH)
 	public ModelAndView list(HttpServletRequest request) {
+System.out.println("eee");
 		return new ModelAndView("questionbank/tShNotfitruleDetail/tShNotfitruleDetailList");
 	}
 
@@ -107,12 +111,12 @@ public class TShNotfitruleDetailController extends BaseController {
 	 *
 	 * */
 
-	@RequestMapping(params = "detailList")
+	/*@RequestMapping(params = "detailList")
 	public ModelAndView detailList(HttpServletRequest request) {
 		request.setAttribute("detailsql",request.getParameter("detailsql"));
 		request.setAttribute("hospid",request.getParameter("hospid"));
 		return new ModelAndView("questionbank/tShNotfitruleDetail/drugDetailList");
-	}
+	}*/
 
 	@RequestMapping(params = "detailListGrid")
 	public void detailListGrid(TShHospDrugListEntity tShHospDrugList, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
@@ -290,9 +294,9 @@ public class TShNotfitruleDetailController extends BaseController {
 		CriteriaQuery cq = new CriteriaQuery(TShNotfitruleDetailEntity.class, dataGrid);
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShNotfitruleDetail, request.getParameterMap());
 		List<TShNotfitruleDetailEntity> tShNotfitruleDetails = this.tShNotfitruleDetailService.getListByCriteriaQuery(cq,false);
-		modelMap.put(NormalExcelConstants.FILE_NAME,"规则清单明细");
+		modelMap.put(NormalExcelConstants.FILE_NAME,"审核结果明细清单");
 		modelMap.put(NormalExcelConstants.CLASS,TShNotfitruleDetailEntity.class);
-		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("规则清单明细列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
+		modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("审核结果明细清单", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
 			"导出信息"));
 		modelMap.put(NormalExcelConstants.DATA_LIST,tShNotfitruleDetails);
 		return NormalExcelConstants.JEECG_EXCEL_VIEW;
@@ -306,9 +310,9 @@ public class TShNotfitruleDetailController extends BaseController {
 	@RequestMapping(params = "exportXlsByT")
 	public String exportXlsByT(TShNotfitruleDetailEntity tShNotfitruleDetail,HttpServletRequest request,HttpServletResponse response
 			, DataGrid dataGrid,ModelMap modelMap) {
-    	modelMap.put(NormalExcelConstants.FILE_NAME,"规则清单明细");
+    	modelMap.put(NormalExcelConstants.FILE_NAME,"审核结果明细清单");
     	modelMap.put(NormalExcelConstants.CLASS,TShNotfitruleDetailEntity.class);
-    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("规则清单明细列表", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
+    	modelMap.put(NormalExcelConstants.PARAMS,new ExportParams("审核结果明细清单", "导出人:"+ResourceUtil.getSessionUser().getRealName(),
     	"导出信息"));
     	modelMap.put(NormalExcelConstants.DATA_LIST,new ArrayList());
     	return NormalExcelConstants.JEECG_EXCEL_VIEW;

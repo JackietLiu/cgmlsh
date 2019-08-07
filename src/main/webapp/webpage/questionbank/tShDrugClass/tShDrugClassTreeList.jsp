@@ -1,3 +1,4 @@
+<!--thisisid: tShDrugClassTreeList.jsp  -->
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <%@ page import="java.util.*"%>
@@ -194,20 +195,16 @@
 		关键字:  <input id="keyword" name="keyword" type="text" style="width: 150px"
 					 class="inputxt"  ignore="ignore" />
 
-		<button type=button class="tool-btn tool-btn-default tool-btn-xs"
-				onclick="searchDict();">
+		<button type=button class="tool-btn tool-btn-default tool-btn-xs" onclick="searchDict();">
 			<i class="fa fa-search"></i>
 			<span>字典中查找</span></button>
-		<button type=button class="tool-btn tool-btn-default tool-btn-xs"
-				onclick="addDict();">
+		<button type=button class="tool-btn tool-btn-default tool-btn-xs" onclick="addDict();">
 			<i class="fa fa-plus"></i>
 			<span>增加同级</span></button>
-		<button type=button class="tool-btn tool-btn-default tool-btn-xs"
-				onclick="addsubDict();">
+		<button type=button class="tool-btn tool-btn-default tool-btn-xs" onclick="addsubDict();">
 			<i class="fa fa-plus"></i>
 			<span>增加下一级</span></button>
-		<button type=button class="tool-btn tool-btn-default tool-btn-xs"
-				onclick="delDict();">
+		<button type=button class="tool-btn tool-btn-default tool-btn-xs" onclick="delDict();">
 			<i class="fa fa-trash"></i>
 			<span>删除</span></button>
 		<%--<input type="button" value="增加同级" onclick="addDict();" style="margin-top: 10px;border:1px solid  #B3B3B3 ;width: 70px;height: 25px ;color:#990000 ">--%>

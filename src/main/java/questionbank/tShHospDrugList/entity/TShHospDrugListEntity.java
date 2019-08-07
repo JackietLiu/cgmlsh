@@ -32,32 +32,36 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 public class TShHospDrugListEntity implements java.io.Serializable {
 	/**id*/
 	private java.lang.String id;
+
+	@Excel(name="批准文号",width=50)
+	private String registerno;
+
 	/**采购序号*/
-	@Excel(name="采购序号",width=15)
+
 	private java.lang.String buyno;
 	/**药品名称*/
-	@Excel(name="药品名称",width=15)
+	//@Excel(name="药品名称",width=15)
 	private java.lang.String commonname;
 	/**药品规格*/
-	@Excel(name="药品规格",width=15)
+	//@Excel(name="药品规格",width=15)
 	private java.lang.String gg;
 	/**单位*/
-	@Excel(name="单位",width=15)
+	//@Excel(name="单位",width=15)
 	private java.lang.String pcs;
 	/**厂家*/
-	@Excel(name="厂家",width=15)
+	//@Excel(name="厂家",width=15)
 	private java.lang.String enterprisename;
 	/**剂型*/
-	@Excel(name="剂型",width=15)
+	//@Excel(name="剂型",width=15)
 	private java.lang.String drugform;
 	/**购进单价*/
-	@Excel(name="购进单价",width=15)
+	//@Excel(name="购进单价",width=15)
 	private java.lang.Double inprice;
 	/**入库数量*/
-	@Excel(name="入库数量",width=15)
+	//@Excel(name="入库数量",width=15)
 	private java.lang.Double innum;
 	/**转换比*/
-	@Excel(name="转换比",width=15)
+	//@Excel(name="转换比",width=15)
 	private java.lang.Integer rationnum;
 	/**更新人名称*/
 	//@Excel(name="更新人名称",width=15)
@@ -73,13 +77,23 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	private java.lang.String createName;
 	/**医院ID*/
 	//@Excel(name="医院编号",width=20,dictTable ="t_sh_hospital",dicCode ="id",dicText ="hospnameshort")
-	@Excel(name="医院编号",width=20)
+	//@Excel(name="医院编号",width=20)
 	private java.lang.String hospid;
 	/**导入批号*/
 	//@Excel(name="导入批号",width=20)
 	private java.lang.String auditno;
 
-	
+	@Column(name ="registerno",nullable=true,length=50)
+	public String getRegisterno() {
+		return registerno;
+	}
+
+	public void setRegisterno(String registerno) {
+		this.registerno = registerno;
+	}
+
+
+
 	/**
 	 *方法: 取得java.lang.String
 	 *@return: java.lang.String  id
@@ -343,7 +357,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *@return: java.lang.String  采购序号
 	 */
 
-	@Column(name ="BUYNO",nullable=true,length=20)
+	@Column(name ="BUYNO",nullable=true,length=50)
 	public java.lang.String getBuyno(){
 		return this.buyno;
 	}

@@ -66,6 +66,7 @@ public class TShRuleInfoBoostrapController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(params = "list")
+
 	public ModelAndView list(HttpServletRequest request) {
 		return new ModelAndView("questionbank/tShRuleInfoBoostrap/tShRuleInfoBoostrapList");
 	}

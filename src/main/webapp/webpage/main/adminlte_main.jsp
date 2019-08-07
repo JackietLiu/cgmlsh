@@ -242,7 +242,7 @@
               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="javascript:openwindow('个人信息','userController.do?userinfo')">个人信息</a>
+                    <a href="javascript:openwindow('用户信息','userController.do?userinfo')">用户信息</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="javascript:add('<t:mutiLang langKey="common.change.password"/>','userController.do?changepassword','',550,200)">修改密码</a>
