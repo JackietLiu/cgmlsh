@@ -11,7 +11,6 @@
   session.setAttribute("isdebugmode",ResourceUtil.getConfigByName("isdebugmode").trim());
 /*  session.setAttribute("debugmodeusername",ResourceUtil.getConfigByName("debugmodeusername").trim());
   session.setAttribute("debugmodepwd",ResourceUtil.getConfigByName("debugmodepwd").trim());*/
-  
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -46,7 +45,19 @@
   <script src="plug-in/ace/js/html5shiv.js"></script>
   <script src="plug-in/ace/js/respond.js"></script>
   <![endif]-->
-
+    <style>
+        .dlxls{
+            padding: 5px;
+            text-align: center;
+        }
+        .dlxls a{
+            font-size: 18px;
+        }
+        .dlxls a:hover{
+            color: #fff;
+            font-size: 20px;
+        }
+    </style>
 </head>
 <body class="login-layout light-login">
 <div class="main-container">
@@ -135,21 +146,16 @@
                       <div class="space-4"></div>
 
                 </div>
-                <div class="toolbar clearfix">
-                  <div style="float: right">
-                    <a href="#"  class="forgot-password-link">
-                    	  语言
-                      <i class="ace-icon fa fa-arrow-right"></i>
-                      <t:dictSelect id="langCode" field="langCode" typeGroupCode="lang" hasLabel="false" extendJson="{style:'padding:2px; width:80px;'}" defaultVal="zh-cn"></t:dictSelect>
-                    </a>
-                  </div>
+                <div class="toolbar dlxls clearfix">
+                    <a href="upload/hospitals.xls" class="forgot-password-link">下载医院代码表</a>
                 </div>
                 </form>
               </div>
             </div>
             <div class="center">
          <!--    zcznoted -->
-             <h4 class="blue" id="id-company-text"><t:mutiLang langKey="sys.copyright"/></h4></div>
+                <%--<h4 class="blue" id="id-company-text"><t:mutiLang langKey="sys.copyright"/></h4>--%>
+            </div>
             <div class="navbar-fixed-top align-right">
               <br />
               &nbsp;

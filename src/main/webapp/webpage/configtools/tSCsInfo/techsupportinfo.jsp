@@ -87,8 +87,18 @@
                     <div style="padding-top: 10px;"></div>
                     <c:forEach var="c" items="${f.cb}">
                         <div class="methods">
-                            <c:if test="${c.methodname !='QQ'}" >
-                                <span class="methodname">${c.methodname}</span>
+                            <c:if test="${c.methodname =='1'}" >
+                                <span class="methodname">电话</span>
+                                <span class="method">${c.method}</span>
+
+                            </c:if>
+                            <c:if test="${c.methodname =='2'}" >
+                                <span class="methodname">手机</span>
+                                <span class="method">${c.method}</span>
+
+                            </c:if>
+                            <c:if test="${c.methodname =='3'}" >
+                                <span class="methodname">微信</span>
                                 <span class="method">${c.method}</span>
                                 <c:if test="${not empty c.picname}">
                                     <span><img id="${z.id}" class="img" onmouseenter="imghover('${z.id}')" src="${c.picname}"/></span>
@@ -97,7 +107,7 @@
                                     </div>
                                 </c:if>
                             </c:if>
-                            <c:if test="${c.methodname =='QQ'}" >
+                            <c:if test="${c.methodname =='4'}" >
                                 <span class="methodname">QQ</span>
                                 <span class="method">${c.method}</span>
                                 <span> <a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=${c.method}&site=qq&menu=yes"><img border="0" style="vertical-align: middle"  src="http://wpa.qq.com/pa?p=2:${c.method}:51" alt="点击这里给我发消息" title="点击这里给我发消息"/></a></span>

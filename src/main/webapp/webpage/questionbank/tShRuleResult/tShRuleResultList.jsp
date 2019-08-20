@@ -31,7 +31,8 @@
 				<div class="seerch-div">
 					<label>医院名称:</label>
 					<div class="search-control">
-						<select name = "hospid" class="dts search-inp search-select"></select>
+						<%--<select name = "hospid" class="dts search-inp search-select"></select>--%>
+						<t:dictSelect field="hospid" extendJson="{style:'width:100%'}" dictTable="t_sh_hospital" dictField="id" dictText="hospnameshort" dictCondition="where regionid='${regionid}'" title="选择医院"></t:dictSelect>
 					</div>
 				</div>
 				</c:if>
@@ -99,7 +100,7 @@ $(function(){
 	            $(this).pagination('loaded');
 	        }
 	    });
-		loadSearchFormDicts($("#tShRuleResultForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院编号");
+		//loadSearchFormDicts($("#tShRuleResultForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院编号");
 	}).fail(function(){
 		console.log("i'm sorry!it's unkown error that i can't resolve as yet");
 	});
@@ -121,7 +122,7 @@ function getCustomerList(id,ruleid){
 }
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShRuleResultController.do?datagrid&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
+	var actionUrl = "tShRuleResultController.do?datagrid&hospid=${firsthosp}&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
  	$('#tShRuleResultList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
@@ -216,11 +217,11 @@ function initDatagrid(){
 			,{
 				field : "resultdesc",
 				title : "结果描述",
-				width : 120,
+				width : 230,
 				sortable: true,
 			}
 			,{
-	            field: 'opt',title: '操作',width: 150,
+	            field: 'opt',title: '操作',width: 150,hidden:true,
 	            formatter: function(value, rec, index) {
 	                if (!rec.id) {
 	                    return '';
@@ -291,7 +292,7 @@ function resetSearch(){
     $('#tShRuleResultForm').find("input[type='radio']").each(function() {
         $(this).attr('checked', false);
     });
-    var actionUrl = "tShRuleResultController.do?datagrid&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
+    var actionUrl = "tShRuleResultController.do?datagrid&hospid=${firsthosp}&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
     $('#tShRuleResultList').datagrid({
         url: actionUrl,
         pageNumber: 1

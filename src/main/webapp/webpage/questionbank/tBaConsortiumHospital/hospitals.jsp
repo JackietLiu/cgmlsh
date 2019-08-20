@@ -7,7 +7,7 @@
 <t:base type="jquery,easyui,tools"></t:base>
 </head>
 <body style="overflow-y: hidden" scroll="no">
-<t:datagrid  pagination="false"  name="hospList" title="选择医院"  actionUrl="tShHospitalController.do?datagrid" idField="id" checkbox="true" showRefresh="false"  fit="true"  queryMode="group" onLoadSuccess="initCheck">
+<t:datagrid  name="hospList" title="选择医院"  actionUrl="tShHospitalController.do?datagrid" idField="id" checkbox="true" showRefresh="false"  fit="true"  queryMode="group" onLoadSuccess="initCheck">
 	<t:dgCol title="医院编码" field="id" hidden="true"></t:dgCol>
 	<t:dgCol title="基层医院名称" field="hospname" width="50" query="true" ></t:dgCol>
 </t:datagrid>

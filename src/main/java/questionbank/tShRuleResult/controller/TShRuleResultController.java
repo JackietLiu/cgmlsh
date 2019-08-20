@@ -1,4 +1,9 @@
 package questionbank.tShRuleResult.controller;
+import org.apache.commons.utils.StringUtil3;
+import org.jeecgframework.web.system.pojo.base.TSRoleUser;
+import questionbank.tShHospImport.entity.TShHospImportEntity;
+import questionbank.tShHospital.entity.TShHospitalEntity;
+import questionbank.tShRoleRegionMatch.entity.TShRoleRegionMatchEntity;
 import questionbank.tShRuleResult.entity.TShRuleResultEntity;
 import questionbank.tShRuleResult.service.TShRuleResultServiceI;
 
@@ -72,6 +77,22 @@ public class TShRuleResultController extends BaseController {
 		if(request.getSession().getAttribute("hospid")!=null){
 			hospid=(String)request.getSession().getAttribute("hospid");
 		}
+		List<TSRoleUser> rus = systemService.findByProperty(TSRoleUser.class,"TSUser",ResourceUtil.getSessionUser());
+		if (rus.size() > 0) {
+			String roleid = rus.get(0).getTSRole().getId();
+			List<TShRoleRegionMatchEntity> rrms = systemService.findByProperty(TShRoleRegionMatchEntity.class,"roleid",roleid);
+
+			if (rrms.size() > 0) {
+				String regionid = rrms.get(0).getRegionid();
+				//获取已上传的第一家医院作为默认搜索条件
+				List<TShHospImportEntity> hospitals = systemService.findByProperty(TShHospImportEntity.class,"regionid",regionid);
+				if (hospitals.size() > 0) {
+					request.setAttribute("firsthosp",hospitals.get(0).getHospid());
+				}
+
+				request.setAttribute("regionid",regionid);
+			}
+		}
 
 		request.setAttribute("hospid",hospid);
 
@@ -102,12 +123,33 @@ public class TShRuleResultController extends BaseController {
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShRuleResult, request.getParameterMap());
 		try{
 			//自定义追加查询条件
-			String usertype = ResourceUtil.getSessionUser().getUserType();
-			if ("1".equals(usertype)){
-				String hospid = (String) request.getSession().getAttribute("hospid");
+			String hospids = request.getParameter("hospid");
+			String hospid = (String) request.getSession().getAttribute("hospid");
+			if (StringUtil3.isNotEmpty(hospids)){
+				cq.eq("hospid",hospids);
+			}else {
 				cq.eq("hospid",hospid);
 			}
 
+
+			//String userid = ResourceUtil.getSessionUser().getId();
+			/*List<TSRoleUser> rus = systemService.findByProperty(TSRoleUser.class,"TSUser",ResourceUtil.getSessionUser());
+			if (rus.size() > 0) {
+				String roleid = rus.get(0).getTSRole().getId();
+				List<TShRoleRegionMatchEntity> rrms = systemService.findByProperty(TShRoleRegionMatchEntity.class,"roleid",roleid);
+
+				if (rrms.size() > 0) {
+					String regionid = rrms.get(0).getRegionid();
+					List<TShHospitalEntity> hospitals = systemService.findByProperty(TShHospitalEntity.class,"regionid",regionid);
+					for (int i = 0;i < hospitals.size();i++) {
+
+
+					}
+				}else if (rus.get(0).getTSRole().getRoleCode().equals("all_hosp")){
+					String hospid = (String) request.getSession().getAttribute("hospid");
+					cq.eq("hospid",hospid);
+				}
+			}*/
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

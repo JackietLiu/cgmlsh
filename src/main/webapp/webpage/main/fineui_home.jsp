@@ -79,6 +79,7 @@
     <div class="alert alert-warning">
         <span>已提交：</span><a><label id="submited" class="label label-success"></label></a>
         <span class="topspan">未提交：</span><a><label id="unsubmit" class="label label-danger"></label></a>
+        <a onclick="sendmsg()">给未提交的医院下发短信通知</a>
         <span class="topspan">已审核：</span><a><label id="audited" class="label label-success"></label></a>
     </div>
     <div class="row">
@@ -170,6 +171,21 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-7">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>各区县占比</h5>
+                    <div class="pull-right">
+
+                    </div>
+                </div>
+                <div class="ibox-content"  style="height: 400px;">
+                    <div id="echart_div_percent"  style="height: 400px;">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- 全局js -->
     <script src="plug-in/hplus/js/jquery.min.js?v=2.1.4"></script>
@@ -190,9 +206,11 @@
 
             });
             var chart = echarts.init(document.getElementById('echart_div'));
+            var chart_percent = echarts.init(document.getElementById('echart_div_percent'))
             var jsondata = ${theclass};
             /*获取提交、未提交和已审核的数据 begin*/
             var counts = ${counts};
+            var percents = ${percents};
             var submited =parseInt(counts[0].submited);//已提交
             var hosptotal = parseInt(counts[0].hosptotal);//医院总数
             var audited = parseInt(counts[0].audited);//已审核
@@ -260,8 +278,76 @@
                                 //color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
 
                                 // 定制显示（按顺序）
+                                color: '#C33531'
+                            },
+                        },
+
+                    }
+                ]
+            };
+            chart.setOption(option, true);
+
+            var xAxisData_percent=[];
+            var seriesData_percent=[];
+            for(var i in percents){
+                xAxisData_percent.push(percents[i].rname);
+                seriesData_percent.push((percents[i].importsl/percents[i].allsl*100).toFixed(0));
+            }
+            var option = {
+                color: ['#3398DB'],
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                        type : 'line'        // 默认为直线，可选为：'line' | 'shadow'
+                    }
+                },
+                grid: {
+                    top: '15%',
+                    left: '10%',
+                    right: '10%',
+                    bottom: '15%',
+                    containLabel: true
+                },
+                xAxis : [
+                    {
+                        type: 'category',
+                        data : xAxisData_percent,
+                        axisTick: {
+                            alignWithLabel: true
+                        },
+                        axisLabel:{
+                            interval:0,//横轴信息全部显示
+                            rotate:-10,//-10角度倾斜展示
+                        },
+                        name:'区县'
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name:'百分比'
+                    }
+                ],
+                series : [
+                    {
+                        name:'百分比',
+                        type:'bar',
+                        barWidth: '40%',
+                        data:seriesData_percent,
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        itemStyle: {
+                            normal: {
+                                // 随机显示
+                                //color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+
+                                // 定制显示（按顺序）
                                 color: function(params) {
-                                    var colorList = ['#C33531','#C33531','#C33531','#C33531','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ];
+                                    var colorList = ['#C33531','#29AAE3', '#B74AE5','#0AAF9F','#E89589','#16A085','#4A235A','#C39BD3 ','#F9E79F','#BA4A00','#ECF0F1','#616A6B','#EAF2F8','#4A235A','#3498DB' ];
                                     return colorList[params.dataIndex]
                                 }
                             },
@@ -270,8 +356,25 @@
                     }
                 ]
             };
-            chart.setOption(option, true);
+            chart_percent.setOption(option, true);
+
         });
+
+        function sendmsg() {
+            $.ajax({
+                url:"tShHospitalController.do?sendmsgs",
+                dataType:"json",
+                success:function (ret) {
+                    console.log(JSON.stringify(ret));
+                },
+                error:function (err) {
+
+                }
+            })
+            /*$.post("http://sms.api.ums86.com:8899/sms/Api/Send.do?SpCode=222831&LoginName=nt_wsw&Password=wsw931616&MessageContent=短信测试，请勿回复&UserNumber=19907030880&SerialNumber=00000000000000000001&ScheduleTime=&f=1",function(data,status){
+                alert("Data: " + data + "nStatus: " + status);
+            },"jsonp");*/
+        }
     </script>
 </body>
 </html>

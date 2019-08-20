@@ -166,35 +166,42 @@
 					<li>
 	                         <a href="javascript:createdetailwindow('<t:mutiLang langKey="common.ssms.getSysInfos"/>','tSSmsController.do?goMySmsList',800,400)" title="系统消息">系统消息</a>
 					</li>
-					<li >
-	                       <%--  <a href="javascript:window.open('http://yun.jeecg.org')" title="云应用中心">云应用中心</a>--%>
-					</li>
+
+                    <li>
+                       <%-- <a href="javascript:openwindow('使用帮助','tBOnlineDocController.do?displaypdf&docid=2','',850,700)">
+                            使用帮助
+                        </a>--%>
+					   <a href="upload/帮助文档.doc">
+						   帮助文档
+					   </a>
+
+                    </li>
 					<li><a href="javascript:clearLocalstorage()"><t:mutiLang langKey="common.clear.localstorage"/></a></li>
 					<%--<li><a href="javascript:toSwagger()">SwaggerUI</a></li>--%>
 				</ul>
 			</li> 
 			
 			
-			<li class="header-bar-nav hiddenty-xs"> 
+			<%--<li class="header-bar-nav hiddenty-xs">
 				<a href="javascript:add('首页风格','userController.do?changestyle','',550,270)" title="换肤">
 					<i class="icon-font">&#xe615;</i>&nbsp;风格切换
 				</a>
-			</li> 
+			</li> --%>
 				
 				
 			<li class="header-bar-nav personInfo">
 				<a href="javascript:;" id="personInfo">
 					<span>
 						<img src="plug-in/themes/fineui/common/image/head.jpg" style="width:24px;display:inline-block;border-radius:20px">
-						<span>${userName}</span>
+						<span>${realName}</span>
 						<i class="icon-font adminIcon" style="margin-right:5px;">&#xe607;</i>
 					</span>
 				</a>
 				
 				<ul class="header-dropdown-menu" style="padding-right:4px">
 					<li>
-						<a href="javascript:openwindow('用户信息','userController.do?userinfo')">
-							用户信息
+						<a href="javascript:openwindow('我的信息','userController.do?userinfo')">
+							我的信息
 						</a>
 					</li>
 					<li>
@@ -222,16 +229,12 @@
 							<t:mutiLang langKey="common.change.password"/>
 						</a>
 					</li>
-					<li>
-						<a href="javascript:openwindow('客服信息','tSCsInfoDController.do?techsupportinfo','',850,700)">
-							客服信息
-						</a>
-					</li>
-					<li>
-						<a href="javascript:openwindow('使用帮助','tBOnlineDocController.do?displaypdf&docid=2','',850,700)">
-							使用帮助
-						</a>
-					</li>
+
+                    <li>
+                        <a href="javascript:openwindow('客服信息','tSCsInfoDController.do?techsupportinfo','',850,700)">
+                            客服信息
+                        </a>
+                    </li>
 					<li>
 						<a href="javascript:logout()">
 							<i class="icon-off"></i>
@@ -296,6 +299,11 @@
 	<!-- 在线聊天 -->
 	<%@include file="/context/layui.jsp"%>
 	<script type="text/javascript">
+    var must = "${mustchangepwd}";
+    if (must == "1"){
+        add('请重置初始密码后使用','userController.do?changepassword','',550,200);
+    }
+
 	function checkput(){
 		var name = $("#searchbox").val();
     	$.ajax({

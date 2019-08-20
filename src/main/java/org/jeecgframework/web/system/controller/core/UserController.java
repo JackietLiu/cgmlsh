@@ -294,20 +294,21 @@ public class UserController extends BaseController {
 	public AjaxJson savenewpwd(HttpServletRequest request) {
 		AjaxJson j = new AjaxJson();
 		TSUser user = ResourceUtil.getSessionUser();
+		TSUser my = systemService.get(TSUser.class,user.getId());
 		logger.info("["+IpUtil.getIpAddr(request)+"][修改密码] start");
 		String password = oConvertUtils.getString(request.getParameter("password"));
 		String newpassword = oConvertUtils.getString(request.getParameter("newpassword"));
-		String pString = PasswordUtil.encrypt(user.getUserName(), password, PasswordUtil.getStaticSalt());
-		if (!pString.equals(user.getPassword())) {
+	/*	String pString = PasswordUtil.encrypt(password, user.getUserName(), PasswordUtil.getStaticSalt());*/
+		if (!password.equals(my.getPassword())) {
 			j.setMsg("原密码不正确");
 			j.setSuccess(false);
 		} else {
 			try {
-				user.setPassword(PasswordUtil.encrypt(user.getUserName(), newpassword, PasswordUtil.getStaticSalt()));
+				my.setPassword(newpassword);//PasswordUtil.encrypt(newpassword, user.getUserName(), PasswordUtil.getStaticSalt())
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			systemService.updateEntitie(user);
+			systemService.updateEntitie(my);
 			j.setMsg("修改成功");
 			logger.info("["+IpUtil.getIpAddr(request)+"][修改密码]修改成功 userId:"+user.getUserName());
 
@@ -360,7 +361,7 @@ public class UserController extends BaseController {
 			}
 			
 			//System.out.println(users.getUserName());
-			users.setPassword(PasswordUtil.encrypt(users.getUserName(), password, PasswordUtil.getStaticSalt()));
+			users.setPassword(password);//PasswordUtil.encrypt(password, users.getUserName(),  PasswordUtil.getStaticSalt())
 			users.setStatus(Globals.User_Normal);
 			users.setActivitiSync(users.getActivitiSync());
 			systemService.updateEntitie(users);	
@@ -773,7 +774,7 @@ public class UserController extends BaseController {
 			if (users != null) {
 				message = "用户: " + users.getUserName() + "已经存在";
 			} else {
-				user.setPassword(PasswordUtil.encrypt(user.getUserName(), oConvertUtils.getString(req.getParameter("password")), PasswordUtil.getStaticSalt()));
+				user.setPassword(oConvertUtils.getString(req.getParameter("password")));
 				user.setStatus(Globals.User_Normal);
 				user.setDeleteFlag(Globals.Delete_Normal);
 				//默认添加为系统用户
@@ -982,7 +983,7 @@ public class UserController extends BaseController {
 			users.setMobilePhone(user.getMobilePhone());
 			users.setDevFlag(user.getDevFlag());
 
-			user.setPassword(PasswordUtil.encrypt(user.getUserName(), password, PasswordUtil.getStaticSalt()));
+			user.setPassword(password);
 
 //            systemService.executeSql("delete from t_s_user_org where user_id=?", user.getId());
 //            saveUserOrgList(req, user);
@@ -1016,7 +1017,7 @@ public class UserController extends BaseController {
 			if (users != null) {
 				message = "用户: " + users.getUserName() + "已经存在";
 			} else {
-				user.setPassword(PasswordUtil.encrypt(user.getUserName(), password, PasswordUtil.getStaticSalt()));
+				user.setPassword(password);
 //				if (user.getTSDepart().equals("")) {
 //					user.setTSDepart(null);
 //				}
@@ -1496,7 +1497,7 @@ public class UserController extends BaseController {
 					String roleCodes = tsUser.getUserKey();
 					String deptCodes = tsUser.getDepartid();
 
-					tsUser.setPassword(PasswordUtil.encrypt(username, "123456", PasswordUtil.getStaticSalt()));
+					tsUser.setPassword("123456");
 					tsUser.setUserType(Globals.USER_TYPE_SYSTEM);//导入用户 在用户管理列表不显示
 
 					if((roleCodes==null||roleCodes.equals(""))||(deptCodes==null||deptCodes.equals(""))){

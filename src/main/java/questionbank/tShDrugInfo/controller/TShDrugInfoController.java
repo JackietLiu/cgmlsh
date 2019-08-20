@@ -70,6 +70,8 @@ public class TShDrugInfoController extends BaseController {
 	 */
 	@RequestMapping(params = "list")
 	public ModelAndView list(HttpServletRequest request) {
+		String currentroleids=(String)request.getSession().getAttribute("currentroleids");
+		request.setAttribute("currentroleids",currentroleids);
 		return new ModelAndView("questionbank/tShDrugInfo/tShDrugInfoList");
 	}
 

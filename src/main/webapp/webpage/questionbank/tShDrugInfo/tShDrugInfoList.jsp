@@ -71,30 +71,34 @@
 			</form>
 		</div>
 		<div class="toolbar-btn">
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="add('录入','tShDrugInfoController.do?goAdd','tShDrugInfoList',908,500)">
-				<i class="fa fa-plus"></i>
-				<span>录入</span>
-			</button>
-			
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('编辑','tShDrugInfoController.do?goUpdate','tShDrugInfoList',908,500)">
-				<i class="fa fa-edit"></i>
-				<span>编辑</span>
-			</button>
+
+			<c:if test="${fn:contains(currentroleids,'8a8ab0b246dc81120146dc8181870050')}">
+				<button name="btnadd" id="btnadd" type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="add('录入','tShDrugInfoController.do?goAdd','tShDrugInfoList',908,500)">
+					<i class="fa fa-plus"></i>
+					<span>录入</span>
+				</button>
+				<button name="btnedit" id="btnedit" type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('编辑','tShDrugInfoController.do?goUpdate','tShDrugInfoList',908,500)">
+					<i class="fa fa-edit"></i>
+					<span>编辑</span>
+				</button>
+				<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="deleteALLSelect('批量删除','tShDrugInfoController.do?doBatchDel','tShDrugInfoList',null,null)">
+					<i class="fa fa-trash"></i>
+					<span>批量删除</span>
+				</button>
+				<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="openuploadwin('Excel导入', 'tShDrugInfoController.do?upload', 'tShDrugInfoList')">
+					<i class="fa fa-download"></i>
+					<span>导入</span>
+				</button>
+			</c:if>
 
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('查看','tShDrugInfoController.do?goUpdate&load=detail','tShDrugInfoList',908,500)">
 				<i class="fa fa-search"></i>
 				<span>查看</span>
 			</button>
 
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="deleteALLSelect('批量删除','tShDrugInfoController.do?doBatchDel','tShDrugInfoList',null,null)">
-				<i class="fa fa-trash"></i>
-				<span>批量删除</span>
-			</button>
+
 			
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="openuploadwin('Excel导入', 'tShDrugInfoController.do?upload', 'tShDrugInfoList')">
-				<i class="fa fa-download"></i>
-				<span>导入</span>
-			</button>
+
 			
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="JeecgExcelExport('tShDrugInfoController.do?exportXls','tShDrugInfoList')">
 				<i class="fa fa-upload"></i>

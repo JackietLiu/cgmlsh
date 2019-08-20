@@ -11,7 +11,7 @@
 		<div class="form"><label class="form"> <t:mutiLang langKey="common.username"/>: </label> ${user.userName }</div>
 		<div class="form"><label class="form"> <t:mutiLang langKey="common.surname"/>: </label> ${user.realName}</div>
 		<div class="form"><label class="form"> <t:mutiLang langKey="common.phone"/>: </label> ${user.mobilePhone}</div>
-		<div class="form"><label class="form"> <t:mutiLang langKey="common.office.tel"/>: </label> ${user.officePhone}</div>
+		<div class="form"><label class="form"> 电话号码: </label> ${user.officePhone}</div>
 		<div class="form"><label class="form"> <t:mutiLang langKey="common.mail"/>: </label> ${user.email}</div>
 	</fieldset>
 	</form>

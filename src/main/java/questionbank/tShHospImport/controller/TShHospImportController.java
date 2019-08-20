@@ -1,4 +1,7 @@
 package questionbank.tShHospImport.controller;
+import org.jeecgframework.web.system.pojo.base.TSRole;
+import org.jeecgframework.web.system.pojo.base.TSRoleUser;
+import org.jeecgframework.web.system.pojo.base.TSUser;
 import questionbank.tBaConsortiumHospital.entity.TBaConsortiumHospitalEntity;
 import questionbank.tShHospDrugList.entity.TShHospDrugListEntity;
 import questionbank.tShHospImport.entity.TShHospImportEntity;
@@ -44,7 +47,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import questionbank.tShNotfitruleDetail.entity.TShNotfitruleDetailEntity;
+import questionbank.tShRoleRegionMatch.entity.TShRoleRegionMatchEntity;
 import questionbank.tShRuleInfo.entity.TShRuleInfoEntity;
+import questionbank.tShRuleResult.entity.TShRuleResultEntity;
 
 /**   
  * @Title: Controller  
@@ -77,10 +83,10 @@ public class TShHospImportController extends BaseController {
 	public AjaxJson func_audit( HttpServletRequest request) {
 		String message = "审核成功!";
 		AjaxJson j = new AjaxJson();
-		String hospid=request.getParameter("hospid");
+		String hospid = request.getParameter("hospid");
 
-		String auditno=request.getParameter("auditno");
-		String sql="select * from t_sh_rule_info where id not in ( " +
+		String auditno = request.getParameter("auditno");
+		String sql = "select * from t_sh_rule_info where id not in ( " +
 				" select ruleid  from t_sh_rule_hosplevel_exclude  a join t_sh_hospital b  " +
 				" on  a.hosplevel=b.hosplevel where  b.id='"+ hospid + "' and a.isactive='1' " +
 				" ) and isactive='1' order by sortindex" ;
@@ -110,6 +116,70 @@ public class TShHospImportController extends BaseController {
 		tShHospImportService.updateBySqlString(sql2);
 		return j ;
 	}
+
+	@RequestMapping(params = "func_self_audit")
+	@ResponseBody
+	public AjaxJson func_self_audit( HttpServletRequest request) {
+		String message = "审核成功!";
+		AjaxJson j = new AjaxJson();
+		String hospid = request.getParameter("hospid");
+		String auditno = request.getParameter("auditno");
+		String thestatus = "";
+		List<TShHospImportEntity> his = systemService.findByProperty(TShHospImportEntity.class,"auditno",auditno);
+		if (his.size() > 0) {
+			//获取审核状态
+			thestatus = his.get(0).getThestatus();
+		}
+		if (thestatus.equals("0")){
+			String sql = "select * from t_sh_rule_info where id not in ( " +
+					" select ruleid  from t_sh_rule_hosplevel_exclude  a join t_sh_hospital b  " +
+					" on  a.hosplevel=b.hosplevel where  b.id='"+ hospid + "' and a.isactive='1' " +
+					" ) and isactive='1' order by sortindex" ;
+			List<TShRuleInfoEntity> listrule = tShHospImportService.findObjForJdbc(sql,TShRuleInfoEntity.class);
+			/*清除auditno相同的结果*/
+			String rrssql = "select * from t_sh_rule_result where hospid='"+hospid+"' and auditno='"+auditno+"'";
+			String ndssql = "select * from t_sh_notfitrule_detail where hospid='"+hospid+"' and auditno='"+auditno+"'";
+			List<TShRuleResultEntity> rrs = systemService.findObjForJdbc(rrssql,TShRuleResultEntity.class);
+			List<TShNotfitruleDetailEntity> nds = systemService.findObjForJdbc(ndssql,TShNotfitruleDetailEntity.class);
+
+			//List<TShRuleResultEntity> rrs = systemService.findByProperty(TShRuleResultEntity.class,"auditno",auditno);
+			//List<TShNotfitruleDetailEntity> nds = systemService.findByProperty(TShNotfitruleDetailEntity.class,"auditno",auditno);
+			if (rrs.size() > 0){
+				systemService.deleteAllEntitie(rrs);
+			}
+			if (nds.size() > 0) {
+				systemService.deleteAllEntitie(nds);
+			}
+			//String sqlhosplevel="select hosplevel from t_sh_hospital where id='" + hospid +"'" ;
+			//String thelevel=tShHospImportService.getSingleValue(sqlhosplevel);
+			for (int i=0;i<listrule.size();i++){
+				TShRuleInfoEntity item=listrule.get(i);
+				String procsql = item.getRulesql();
+				String roleid = item.getId();
+				String sqlproc = "";
+				if (item.getSortindex() < 500){
+					sqlproc  = "{call " +procsql+"('"+hospid +"','"+roleid +"','"+auditno +"')}";
+					tShHospImportService.executeProcedure(sqlproc);
+				}else {
+					List<TBaConsortiumHospitalEntity> chs = systemService.findByProperty(TBaConsortiumHospitalEntity.class,"hospid",hospid);
+					if(chs.size() > 0){
+						List<TShHospDrugListEntity> hds = systemService.findByProperty(TShHospDrugListEntity.class,"hospid",chs.get(0).getHeadhospid());
+						sqlproc  = "{call " +procsql+"('"+hospid +"','"+chs.get(0).getHeadhospid() +"','"+roleid +"','"+auditno +"','"+hds.get(0).getAuditno() +"')}";
+						tShHospImportService.executeProcedure(sqlproc);
+					}
+
+				}
+
+			}
+			/*String sql2="update t_sh_hosp_import set thestatus='20' where hospid='" +hospid+"' and auditno='" +auditno+"'"  ;
+			tShHospImportService.updateBySqlString(sql2);*/
+		}else{
+			j.setMsg("该批次目录已提交，无法再预审。");
+		}
+
+
+		return j ;
+	}
 //zczadd end modify  on  2019/2/28 14:03
 
 	/**
@@ -119,6 +189,25 @@ public class TShHospImportController extends BaseController {
 	 */
 	@RequestMapping(params = "list")
 	public ModelAndView list(HttpServletRequest request) {
+        TSUser user = ResourceUtil.getSessionUser();
+        List<TSRoleUser> rus = systemService.findByProperty(TSRoleUser.class,"TSUser",user);
+        //获取角色和区域的关系
+        List<TShRoleRegionMatchEntity> rrm = systemService.findByProperty(TShRoleRegionMatchEntity.class,"roleid",rus.get(0).getTSRole().getId());
+        if (rrm.size() > 0){
+            //区县管理员角色
+            String regionid = rrm.get(0).getRegionid();
+            request.setAttribute("regionid",regionid);
+            request.setAttribute("isadmin","1");
+        }else{
+            if ("admin".equals(rus.get(0).getTSRole().getRoleCode())){
+                //委管理员
+                request.setAttribute("isadmin","0");
+            }else{
+                //医院用户
+                request.setAttribute("isadmin","2");
+            }
+        }
+
 		return new ModelAndView("questionbank/tShHospImport/tShHospImportList");
 	}
 
@@ -138,7 +227,10 @@ public class TShHospImportController extends BaseController {
 		org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShHospImport, request.getParameterMap());
 		try{
 		//自定义追加查询条件
-		
+            if (!tShHospImport.getRegionid().isEmpty()){
+                cq.eq("regionid",tShHospImport.getRegionid());
+            }
+
 		}catch (Exception e) {
 			throw new BusinessException(e.getMessage());
 		}

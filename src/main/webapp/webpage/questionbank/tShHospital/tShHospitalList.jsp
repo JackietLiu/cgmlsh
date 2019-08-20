@@ -139,7 +139,7 @@ $(function(){
 
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,";
+	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,contact,mobileno,";
  	$('#tShHospitalList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
@@ -198,6 +198,18 @@ function initDatagrid(){
 				field : "address",
 				title : "地址",
 				width : 160,
+				halign : "center",
+				sortable: true,
+			},{
+				field : "contact",
+				title : "联系人",
+				width : 80,
+				halign : "center",
+				sortable: true,
+			},{
+				field : "mobileno",
+				title : "手机号",
+				width : 80,
 				halign : "center",
 				sortable: true,
 			},
@@ -349,7 +361,7 @@ function reloadTable() {
 //easyui-datagrid搜索
 function doSearch(){
 	var queryParams = $('#tShHospitalList').datagrid('options').queryParams;
-	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,";
+	var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,contact,mobileno,";
 	$('#tShHospitalForm').find(':input').each(function() {
 		var paramName = $(this).attr('name');
 		if(!!paramName){
@@ -387,7 +399,7 @@ function resetSearch(){
     $('#tShHospitalForm').find("input[type='radio']").each(function() {
         $(this).attr('checked', false);
     });
-    var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,";
+    var actionUrl = "tShHospitalController.do?datagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,contact,mobileno,";
     $('#tShHospitalList').datagrid({
         url: actionUrl,
         pageNumber: 1

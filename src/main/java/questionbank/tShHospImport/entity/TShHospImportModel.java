@@ -42,7 +42,16 @@ public class TShHospImportModel implements java.io.Serializable {
 	/**审核人*/
 	@Excel(name="审核人",width=15)
 	private String auditname;
-
+    /**委审核日期*/
+    @Excel(name="委审核日期",width=15,format = "yyyy-MM-dd")
+    private java.util.Date approvedate;
+    /**委审核人*/
+    @Excel(name="委审核人",width=15)
+    private java.lang.String approvename;
+    /**委审核状态*/
+    @Excel(name="状态",width=15,dicCode="thestatus")
+    private java.lang.String approvestatus;
+    private String regionid;
 	/**主键*/
 	private String id;
 
@@ -266,4 +275,36 @@ public class TShHospImportModel implements java.io.Serializable {
 	public void setHospname(String hospname) {
 		this.hospname = hospname;
 	}
+
+    public Date getApprovedate() {
+        return approvedate;
+    }
+
+    public void setApprovedate(Date approvedate) {
+        this.approvedate = approvedate;
+    }
+
+    public String getApprovename() {
+        return approvename;
+    }
+
+    public void setApprovename(String approvename) {
+        this.approvename = approvename;
+    }
+
+    public String getApprovestatus() {
+        return approvestatus;
+    }
+
+    public void setApprovestatus(String approvestatus) {
+        this.approvestatus = approvestatus;
+    }
+
+    public String getRegionid() {
+        return regionid;
+    }
+
+    public void setRegionid(String regionid) {
+        this.regionid = regionid;
+    }
 }

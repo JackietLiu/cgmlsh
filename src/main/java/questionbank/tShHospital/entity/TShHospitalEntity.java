@@ -83,9 +83,15 @@ public class TShHospitalEntity implements java.io.Serializable {
 	/**传真*/
 	@Excel(name="传真",width=15)
 	private String fax;
-	@Excel(name="所在区域",width = 15)
+
+	@Excel(name="所在区域",width = 15,dictTable = "t_s_region",dicCode = "id",dicText = "name")
 	private String regionid;
 
+	@Excel(name="联系人",width = 15)
+	private String contact;
+
+	@Excel(name="手机号",width = 15)
+	private String mobileno;
 
 	/**
 	 *方法: 取得java.lang.String
@@ -246,7 +252,7 @@ public class TShHospitalEntity implements java.io.Serializable {
 	 */
 	@Id
 	@GeneratedValue(generator = "paymentableGenerator")
-	@GenericGenerator(name = "paymentableGenerator", strategy = "assigned")
+	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 
 	@Column(name ="ID",nullable=false,length=40)
 	public String getId(){
@@ -420,5 +426,21 @@ public class TShHospitalEntity implements java.io.Serializable {
 
 	public void setRegionid(String regionid) {
 		this.regionid = regionid;
+	}
+
+	public String getContact() {
+		return this.contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getMobileno() {
+		return this.mobileno;
+	}
+
+	public void setMobileno(String mobileno) {
+		this.mobileno = mobileno;
 	}
 }

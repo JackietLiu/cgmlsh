@@ -112,7 +112,10 @@
 				<i class="fa fa-download"></i>
 				<span>上传</span>
 			</button>
-
+            <button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="selfCheck();">
+                <i class="fa fa-search"></i>
+                <span>预审</span>
+            </button>
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="before_commit();">
 				<i class="fa fa-upload"></i>
 				<span>提交</span>
@@ -188,6 +191,25 @@ function before_commit(){
 
 
 }
+function selfCheck() {
+    //实现自审
+	var rows = $("#tShHospDrugListList").datagrid("getSelections");
+	if (rows.length == 1) {
+		var hospid = rows[0].hospid;
+		var auditno = rows[0].auditno;
+		//alert(hospid);
+		//alert(auditno);
+		$.ajax({
+			url:"tShHospImportController.do?func_self_audit&hospid=" +hospid +"&auditno=" +auditno,
+			dataType:"json",
+			success:function (ret) {
+				alert(ret.msg)
+			}
+		});
+	} else {
+		alert("只能选择一行后操作");
+	}
+}
 
 function ImportXls() {
 	var finalaction="tShHospDrugListController.do?func_beforeimport";
@@ -225,8 +247,7 @@ function ImportXls() {
 function initDatagrid(){
 	var actionUrl = "tShHospDrugListController.do?datagrid&hospid=${hospid}&field=id,commonname,gg,pcs,enterprisename,drugform,inprice,innum,rationnum,updateName,updateDate,createDate,createName,hospid,auditno,buyno,registerno";
  	$('#tShHospDrugListList').datagrid({
-		/*url:actionUrl,*/
-		url:"",
+		url:actionUrl,
 		idField: 'id', 
 		title: '',
 		loadMsg: '数据加载中...',

@@ -50,9 +50,9 @@ import java.util.*;
  *
  */
 @Controller
-@RequestMapping("/loginController")
-public class LoginController extends BaseController{
-	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+@RequestMapping("/loginController2")
+public class LoginController2 extends BaseController{
+	private static final Logger log = LoggerFactory.getLogger(LoginController2.class);
 	private SystemService systemService;
 	private UserService userService;
 	@Resource
@@ -293,7 +293,6 @@ public class LoginController extends BaseController{
 	public String login(ModelMap modelMap,HttpServletRequest request,HttpServletResponse response) {
 		TSUser user = ResourceUtil.getSessionUser();
 		String roles = "";
-		String currentroleids="";
 		//zczadd begin
 		/*String currentweblevel= ResourceUtil_Expand.getCurrentweblevel();
 		if(currentweblevel.trim().equalsIgnoreCase("1"))
@@ -320,13 +319,12 @@ public class LoginController extends BaseController{
 			List<TSRoleUser> rUsers = systemService.findByProperty(TSRoleUser.class, "TSUser.id", user.getId());
 			for (TSRoleUser ru : rUsers) {
 				TSRole role = ru.getTSRole();
-				currentroleids+=role.getId()+ ",";
 				roles += role.getRoleName() + ",";
 			}
 			if (roles.length() > 0) {
 				roles = roles.substring(0, roles.length() - 1);
 			}
-			request.getSession().setAttribute("currentroleids",currentroleids);
+
 			modelMap.put("roleName", roles.length() > 3 ? roles.substring(0, 3) + "..." : roles);
 			modelMap.put("userName", user.getUserName().length() > 5 ? user.getUserName().substring(0, 5) + "..." : user.getUserName());
 			modelMap.put("realName", user.getRealName().length() > 8 ? user.getRealName().substring(0, 8) + "..." : user.getRealName());

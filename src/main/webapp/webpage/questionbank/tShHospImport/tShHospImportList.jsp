@@ -10,6 +10,12 @@
 <t:base type="jquery,easyui,tools,DatePicker,autocomplete"></t:base>
 <link rel="stylesheet" href="${webRoot}/plug-in/themes/naturebt/css/search-form.css">
 </head>
+<style>
+	select {
+		width: 100%;
+	}
+
+</style>
 <body>
 <div class="easyui-layout" fit="true">
 	<div region="center" style="padding:0px;border:0px">
@@ -32,6 +38,25 @@
 						<input class="dts search-inp" type="text" name="auditno" placeholder="请输入上传批号"/>
 					</div>
 				</div>
+				<c:if test="${isadmin == '1'}"><%--区县管理员--%>
+					<div class="seerch-div">
+						<label>负责区域:</label>
+						<div class="search-control">
+							<%--<select name = "regionid" readonly="readonly" value="${regionid}" class="dts search-inp search-select"></select>--%>
+							<t:dictSelect field="regionid" readonly="readonly" dictTable="t_s_region" dictField="id" dictText="name" dictCondition="where ((pid = 114) or (id = 114))" defaultVal="${regionid}"></t:dictSelect>
+						</div>
+					</div>
+				</c:if>
+				<c:if test="${isadmin == '0'}"><%--委管理员--%>
+					<div class="seerch-div">
+						<label>负责区域:</label>
+						<div class="search-control">
+							<t:dictSelect  field="regionid" dictTable="t_s_region" dictField="id" dictText="name" dictCondition="where ((pid = 114) or (id = 114))" hasLabel="false"  title="区域"></t:dictSelect>
+						</div>
+					</div>
+				</c:if>
+
+
 				<div class="seerch-div">
 					<label>医院编号:</label>
 					<div class="search-control">
@@ -96,6 +121,11 @@
 				<span>检索</span>
 			</button>
 
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="func_batch_audit()">
+				<i class="fa fa-upload"></i>
+				<span>批量审核</span>
+			</button>
+
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="func_audit()">
 				<i class="fa fa-upload"></i>
 				<span>审核</span>
@@ -106,6 +136,7 @@
 </div>
 
 <script>
+
 var tShHospImportListdictsData = {};
 $(function(){
 	var promiseArr = [];
@@ -128,6 +159,7 @@ $(function(){
 	    });
 		loadSearchFormDicts($("#tShHospImportForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院编号");
 		loadSearchFormDicts($("#tShHospImportForm").find("select[name='thestatus']"),"","thestatus","select","状态");
+
 	}).fail(function(){
 		console.log("i'm sorry!it's unkown error that i can't resolve as yet");
 	});
@@ -135,7 +167,8 @@ $(function(){
 
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShHospImportController.do?datagrid&field=auditdate,auditname,auditno,commitdate,commitname,createDate,createName,filename,hospid,id,memo,month,thescore,thestatus,updateDate,updateName,year,";
+
+	var actionUrl = "tShHospImportController.do?datagrid&regionid=${regionid}&field=auditdate,auditname,auditno,commitdate,commitname,createDate,createName,filename,hospid,id,memo,month,thescore,thestatus,updateDate,updateName,year,regionid,approvedate,approvename,approvestatus,";
  	$('#tShHospImportList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
@@ -160,7 +193,7 @@ function initDatagrid(){
 				return 'background-color:yellow;color:black;font-weight:bold;';
 			};
 			if (row.thestatus=='10'){
-				return 'background-color:green;color:black;font-weight:bold;';
+				return 'background-color:green;font-weight:bold;color:white;';
 			};
 
 			if (row.thestatus>'10'){
@@ -312,7 +345,7 @@ function reloadTable() {
 //easyui-datagrid搜索
 function doSearch(){
 	var queryParams = $('#tShHospImportList').datagrid('options').queryParams;
-	var actionUrl = "tShHospImportController.do?datagrid&field=auditdate,auditname,auditno,commitdate,commitname,createDate,createName,filename,hospid,id,memo,month,thescore,thestatus,updateDate,updateName,year,";
+	var actionUrl = "tShHospImportController.do?datagrid&field=auditdate,auditname,auditno,commitdate,commitname,createDate,createName,filename,hospid,id,memo,month,thescore,thestatus,updateDate,updateName,year,regionid,approvedate,approvename,approvestatus,";
 	$('#tShHospImportForm').find(':input').each(function() {
 		var paramName = $(this).attr('name');
 		if(!!paramName){
@@ -350,7 +383,7 @@ function resetSearch(){
     $('#tShHospImportForm').find("input[type='radio']").each(function() {
         $(this).attr('checked', false);
     });
-    var actionUrl = "tShHospImportController.do?datagrid&field=auditdate,auditname,auditno,commitdate,commitname,createDate,createName,filename,hospid,id,memo,month,thescore,thestatus,updateDate,updateName,year,";
+    var actionUrl = "tShHospImportController.do?datagrid&field=auditdate,auditname,auditno,commitdate,commitname,createDate,createName,filename,hospid,id,memo,month,thescore,thestatus,updateDate,updateName,year,regionid,approvedate,approvename,approvestatus,";
     $('#tShHospImportList').datagrid({
         url: actionUrl,
         pageNumber: 1
@@ -504,7 +537,59 @@ function func_audit(){
 	}
 
 }
+
+
 //zczadd end modify  on  2019/2/28 13:59
+function func_batch_audit(){
+
+	var msg=  "对不起，请至少选择一条记录，才可以审核该医院的导入信息！";
+	// ifselect_single_row("tShHospImportList","bootstrap-table",msg);
+	var a = $("#tShHospImportList" ).datagrid('getSelections');
+	if (a.length == 0) {
+		$.messager.alert('提信息示', msg,"info");
+		return;
+	}else {
+		for (var i=0; i < a.length;i++){
+			var thestatus=a[i].thestatus;
+
+			if(thestatus=="20"){
+				var msgtt="请选择未审核的记录";
+				$.messager.alert('提信息示', msgtt,"info");
+				return;
+			}
+			if(thestatus!="10"){
+				var msgere="请选择已提交的记录";
+				$.messager.alert('提信息示', msgere,"info");
+				return;
+			}
+			if(thestatus=="10"){
+				var hospname = listDictFormat(a[i].hospid,"id","t_sh_hospital");
+				var finalaction="tShHospImportController.do?func_audit&hospid=" +a[i].hospid +"&auditno=" +a[i].auditno;
+
+				$.ajax({
+					cache:true,
+					type:"post",
+					url:finalaction,
+					data:"",
+					dataType:"json",
+					success: function(data){
+
+						$("#tShHospImportList" ).datagrid("reload");
+					}
+				})
+
+
+
+			}
+		}
+
+
+	}
+
+
+}
+
+
 
 </script>
 </body>

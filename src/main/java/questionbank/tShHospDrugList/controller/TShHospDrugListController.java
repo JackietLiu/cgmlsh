@@ -191,7 +191,6 @@ public class TShHospDrugListController extends BaseController {
         if(request.getParameter("thescope")!=null){
             thescope=(String)request.getParameter("thescope") ;
         }
-
         CriteriaQuery cq = new CriteriaQuery(TShHospDrugListEntity.class, dataGrid);
         //查询条件组装器
         org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShHospDrugList, request.getParameterMap());
@@ -413,8 +412,6 @@ public class TShHospDrugListController extends BaseController {
         for (Map.Entry<String, MultipartFile> entity : fileMap.entrySet()) {
             MultipartFile file = entity.getValue();// 获取上传文件对象
             //导入前备份数据到历史记录表
-
-
             String hospid = (String) request.getSession().getAttribute("hospid");
             TShHospitalEntity hosp = systemService.get(TShHospitalEntity.class,hospid);
             if (hospid.equals("") || hospid == null) {
