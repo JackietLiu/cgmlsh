@@ -267,7 +267,7 @@
                 }
 
                 ,{
-                    field: 'opt',title: '操作',width: 150,
+                    field: 'opt',title: '操作',width: 150,hidden:true,
                     formatter: function(value, rec, index) {
                         if (!rec.id) {
                             return '';

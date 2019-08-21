@@ -19,7 +19,6 @@
 		<div class="col-sm-7">
 			<div class="input-group" style="width:100%">
 				<t:webUploader name="uploadfile"
-							   pathValues="d:\upload"
 							   outJs="true" auto="true" showImgDiv="filediv_uploadfile" fileSingleSizeLimit="2048000000"></t:webUploader>
 				<div class="form" id="filediv_uploadfile"></div>
 			</div>

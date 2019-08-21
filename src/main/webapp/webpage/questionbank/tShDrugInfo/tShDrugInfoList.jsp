@@ -90,16 +90,10 @@
 					<span>导入</span>
 				</button>
 			</c:if>
-
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('查看','tShDrugInfoController.do?goUpdate&load=detail','tShDrugInfoList',908,500)">
 				<i class="fa fa-search"></i>
 				<span>查看</span>
 			</button>
-
-
-			
-
-			
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="JeecgExcelExport('tShDrugInfoController.do?exportXls','tShDrugInfoList')">
 				<i class="fa fa-upload"></i>
 				<span>导出</span>
@@ -109,7 +103,6 @@
 				<i class="fa fa-upload"></i>
 				<span>模版下载</span>
 			</button>
-		
 			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="$('.toolbar-search').slideToggle(function(){$('#tShDrugInfoList').datagrid('resize');});">
 				<i class="fa fa-arrow-circle-left"></i>
 				<span>检索</span>
@@ -384,7 +377,7 @@ function initDatagrid(){
 				}
 			}
 			,{
-	            field: 'opt',title: '操作',width: 150,align : "center",
+	            field: 'opt',title: '操作',width: 150,align : "center",hidden:true,
 	            formatter: function(value, rec, index) {
 	                if (!rec.id) {
 	                    return '';

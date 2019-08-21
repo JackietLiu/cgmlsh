@@ -1,22 +1,10 @@
 package questionbank.tShHospDrugList.entity;
 
-import java.math.BigDecimal;
-import java.util.Date;
-import java.lang.String;
-import java.lang.Double;
-import java.lang.Integer;
-import java.math.BigDecimal;
-import javax.xml.soap.Text;
-import java.sql.Blob;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
-import javax.persistence.SequenceGenerator;
 import org.jeecgframework.poi.excel.annotation.Excel;
+
+import javax.persistence.*;
+import java.util.Date;
 
 /**   
  * @Title: Entity
@@ -29,59 +17,59 @@ import org.jeecgframework.poi.excel.annotation.Excel;
 @Entity
 @Table(name = "t_sh_hosp_drug_list", schema = "")
 @SuppressWarnings("serial")
-public class TShHospDrugListEntity implements java.io.Serializable {
+public class TShHospDrugListEntityForExport implements java.io.Serializable {
 	/**id*/
-	private java.lang.String id;
+	private String id;
 
 	@Excel(name="批准文号",width=50)
 	private String registerno;
 
 	/**采购序号*/
-	@Excel(name="采购序号",width=50)
-	private java.lang.String buyno;
+
+	private String buyno;
 	/**药品名称*/
-	//@Excel(name="药品名称",width=15)
-	private java.lang.String commonname;
+	@Excel(name="药品名称",width=15)
+	private String commonname;
 	/**药品规格*/
-	//@Excel(name="药品规格",width=15)
-	private java.lang.String gg;
+	@Excel(name="药品规格",width=15)
+	private String gg;
 	/**单位*/
-	//@Excel(name="单位",width=15)
-	private java.lang.String pcs;
+	@Excel(name="单位",width=15)
+	private String pcs;
 	/**厂家*/
-	//@Excel(name="厂家",width=15)
-	private java.lang.String enterprisename;
+	@Excel(name="厂家",width=15)
+	private String enterprisename;
 	/**剂型*/
-	//@Excel(name="剂型",width=15)
-	private java.lang.String drugform;
+	@Excel(name="剂型",width=15)
+	private String drugform;
 	/**购进单价*/
-	//@Excel(name="购进单价",width=15)
-	private java.lang.Double inprice;
+	@Excel(name="购进单价",width=15)
+	private Double inprice;
 	/**入库数量*/
-	//@Excel(name="入库数量",width=15)
-	private java.lang.Double innum;
+	@Excel(name="入库数量",width=15)
+	private Double innum;
 	/**转换比*/
-	//@Excel(name="转换比",width=15)
-	private java.lang.Integer rationnum;
+	@Excel(name="转换比",width=15)
+	private Integer rationnum;
 	/**更新人名称*/
 	//@Excel(name="更新人名称",width=15)
-	private java.lang.String updateName;
+	private String updateName;
 	/**更新日期*/
 	//@Excel(name="更新日期",width=15,format = "yyyy-MM-dd")
-	private java.util.Date updateDate;
+	private Date updateDate;
 	/**创建日期*/
 	//@Excel(name="创建日期",width=15,format = "yyyy-MM-dd")
-	private java.util.Date createDate;
+	private Date createDate;
 	/**创建人名称*/
 	//@Excel(name="创建人名称",width=15)
-	private java.lang.String createName;
+	private String createName;
 	/**医院ID*/
 	//@Excel(name="医院编号",width=20,dictTable ="t_sh_hospital",dicCode ="id",dicText ="hospnameshort")
 	//@Excel(name="医院编号",width=20)
-	private java.lang.String hospid;
+	private String hospid;
 	/**导入批号*/
 	//@Excel(name="导入批号",width=20)
-	private java.lang.String auditno;
+	private String auditno;
 
 	@Column(name ="registerno",nullable=true,length=50)
 	public String getRegisterno() {
@@ -103,7 +91,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	@GenericGenerator(name = "paymentableGenerator", strategy = "uuid")
 
 	@Column(name ="ID",nullable=false,length=40)
-	public java.lang.String getId(){
+	public String getId(){
 		return this.id;
 	}
 
@@ -111,7 +99,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  id
 	 */
-	public void setId(java.lang.String id){
+	public void setId(String id){
 		this.id = id;
 	}
 	/**
@@ -120,7 +108,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="COMMONNAME",nullable=true,length=100)
-	public java.lang.String getCommonname(){
+	public String getCommonname(){
 		return this.commonname;
 	}
 
@@ -128,7 +116,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  药品名称
 	 */
-	public void setCommonname(java.lang.String commonname){
+	public void setCommonname(String commonname){
 		this.commonname = commonname;
 	}
 	/**
@@ -137,7 +125,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="GG",nullable=true,length=20)
-	public java.lang.String getGg(){
+	public String getGg(){
 		return this.gg;
 	}
 
@@ -145,7 +133,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  药品规格
 	 */
-	public void setGg(java.lang.String gg){
+	public void setGg(String gg){
 		this.gg = gg;
 	}
 	/**
@@ -154,7 +142,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="PCS",nullable=true,length=20)
-	public java.lang.String getPcs(){
+	public String getPcs(){
 		return this.pcs;
 	}
 
@@ -162,7 +150,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  单位
 	 */
-	public void setPcs(java.lang.String pcs){
+	public void setPcs(String pcs){
 		this.pcs = pcs;
 	}
 	/**
@@ -171,7 +159,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="ENTERPRISENAME",nullable=true,length=100)
-	public java.lang.String getEnterprisename(){
+	public String getEnterprisename(){
 		return this.enterprisename;
 	}
 
@@ -179,7 +167,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  厂家
 	 */
-	public void setEnterprisename(java.lang.String enterprisename){
+	public void setEnterprisename(String enterprisename){
 		this.enterprisename = enterprisename;
 	}
 	/**
@@ -188,7 +176,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="DRUGFORM",nullable=true,length=20)
-	public java.lang.String getDrugform(){
+	public String getDrugform(){
 		return this.drugform;
 	}
 
@@ -196,7 +184,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  剂型
 	 */
-	public void setDrugform(java.lang.String drugform){
+	public void setDrugform(String drugform){
 		this.drugform = drugform;
 	}
 	/**
@@ -205,7 +193,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="INPRICE",nullable=true,scale=2,length=10)
-	public java.lang.Double getInprice(){
+	public Double getInprice(){
 		return this.inprice;
 	}
 
@@ -213,7 +201,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.Double
 	 *@param: java.lang.Double  购进单价
 	 */
-	public void setInprice(java.lang.Double inprice){
+	public void setInprice(Double inprice){
 		this.inprice = inprice;
 	}
 	/**
@@ -222,7 +210,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="INNUM",nullable=true,scale=2,length=11)
-	public java.lang.Double getInnum(){
+	public Double getInnum(){
 		return this.innum;
 	}
 
@@ -230,7 +218,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.Double
 	 *@param: java.lang.Double  入库数量
 	 */
-	public void setInnum(java.lang.Double innum){
+	public void setInnum(Double innum){
 		this.innum = innum;
 	}
 	/**
@@ -239,7 +227,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="RATIONNUM",nullable=true,length=10)
-	public java.lang.Integer getRationnum(){
+	public Integer getRationnum(){
 		return this.rationnum;
 	}
 
@@ -247,7 +235,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.Integer
 	 *@param: java.lang.Integer  转换比
 	 */
-	public void setRationnum(java.lang.Integer rationnum){
+	public void setRationnum(Integer rationnum){
 		this.rationnum = rationnum;
 	}
 	/**
@@ -256,7 +244,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="UPDATE_NAME",nullable=true,length=50)
-	public java.lang.String getUpdateName(){
+	public String getUpdateName(){
 		return this.updateName;
 	}
 
@@ -264,7 +252,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  更新人名称
 	 */
-	public void setUpdateName(java.lang.String updateName){
+	public void setUpdateName(String updateName){
 		this.updateName = updateName;
 	}
 	/**
@@ -273,7 +261,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="UPDATE_DATE",nullable=true)
-	public java.util.Date getUpdateDate(){
+	public Date getUpdateDate(){
 		return this.updateDate;
 	}
 
@@ -281,7 +269,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.util.Date
 	 *@param: java.util.Date  更新日期
 	 */
-	public void setUpdateDate(java.util.Date updateDate){
+	public void setUpdateDate(Date updateDate){
 		this.updateDate = updateDate;
 	}
 	/**
@@ -290,7 +278,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="CREATE_DATE",nullable=true)
-	public java.util.Date getCreateDate(){
+	public Date getCreateDate(){
 		return this.createDate;
 	}
 
@@ -298,7 +286,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.util.Date
 	 *@param: java.util.Date  创建日期
 	 */
-	public void setCreateDate(java.util.Date createDate){
+	public void setCreateDate(Date createDate){
 		this.createDate = createDate;
 	}
 	/**
@@ -307,7 +295,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="CREATE_NAME",nullable=true,length=50)
-	public java.lang.String getCreateName(){
+	public String getCreateName(){
 		return this.createName;
 	}
 
@@ -315,7 +303,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  创建人名称
 	 */
-	public void setCreateName(java.lang.String createName){
+	public void setCreateName(String createName){
 		this.createName = createName;
 	}
 	/**
@@ -324,7 +312,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="HOSPID",nullable=true,length=40)
-	public java.lang.String getHospid(){
+	public String getHospid(){
 		return this.hospid;
 	}
 
@@ -332,7 +320,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  医院ID
 	 */
-	public void setHospid(java.lang.String hospid){
+	public void setHospid(String hospid){
 		this.hospid = hospid;
 	}
 	/**
@@ -341,7 +329,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="AUDITNO",nullable=true,length=20)
-	public java.lang.String getAuditno(){
+	public String getAuditno(){
 		return this.auditno;
 	}
 
@@ -349,7 +337,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  导入批号
 	 */
-	public void setAuditno(java.lang.String auditno){
+	public void setAuditno(String auditno){
 		this.auditno = auditno;
 	}
 	/**
@@ -358,7 +346,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 */
 
 	@Column(name ="BUYNO",nullable=true,length=50)
-	public java.lang.String getBuyno(){
+	public String getBuyno(){
 		return this.buyno;
 	}
 
@@ -366,7 +354,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	 *方法: 设置java.lang.String
 	 *@param: java.lang.String  采购序号
 	 */
-	public void setBuyno(java.lang.String buyno){
+	public void setBuyno(String buyno){
 		this.buyno = buyno;
 	}
 }

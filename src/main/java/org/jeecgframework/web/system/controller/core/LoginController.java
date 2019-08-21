@@ -382,6 +382,7 @@ public class LoginController extends BaseController{
 			}
 
 			return sysTheme.getIndexPath();
+			//return "main/fineui_main";
 		} else {
 			//单点登录 - 返回链接
 			String returnURL = (String) request.getSession().getAttribute("ReturnURL");

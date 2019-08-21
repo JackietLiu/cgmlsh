@@ -21,7 +21,7 @@ public class SysThemesUtil {
 	 */
 	public static SysThemesEnum getSysTheme(HttpServletRequest request){
 		String indexStyle = null;
-		try {
+		/*try {
 			Cookie[] cookies = request.getCookies();
 			for (Cookie cookie : cookies) {
 				if (cookie == null || StringUtils.isEmpty(cookie.getName())) {
@@ -32,8 +32,8 @@ public class SysThemesUtil {
 				}
 			}
 		} catch (Exception e) {
-		}
-		return SysThemesEnum.toEnum(indexStyle);
+		}*/
+		return SysThemesEnum.toEnum("fineui");
 	}
 
 	/**

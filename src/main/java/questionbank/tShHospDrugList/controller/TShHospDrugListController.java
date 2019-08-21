@@ -9,6 +9,7 @@ import org.jeecgframework.core.util.MyBeanUtils;
 import org.jeecgframework.core.util.ResourceUtil;
 import org.jeecgframework.web.system.pojo.base.TSUser;
 import questionbank.tShHospDrugList.entity.TShHospDrugListEntity;
+import questionbank.tShHospDrugList.entity.TShHospDrugListEntityForExport;
 import questionbank.tShHospDrugList.service.TShHospDrugListServiceI;
 
 import java.util.ArrayList;
@@ -32,9 +33,6 @@ import org.jeecgframework.core.constant.Globals;
 import org.jeecgframework.tag.core.easyui.TagUtil;
 import org.jeecgframework.web.system.service.SystemService;
 
-import java.io.OutputStream;
-
-import org.jeecgframework.poi.excel.ExcelExportUtil;
 import org.jeecgframework.poi.excel.ExcelImportUtil;
 import org.jeecgframework.poi.excel.entity.ExportParams;
 import org.jeecgframework.poi.excel.entity.ImportParams;
@@ -46,7 +44,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.util.Map;
-import java.util.HashMap;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -373,11 +370,11 @@ public class TShHospDrugListController extends BaseController {
     @RequestMapping(params = "exportXls")
     public String exportXls(TShHospDrugListEntity tShHospDrugList, HttpServletRequest request, HttpServletResponse response
             , DataGrid dataGrid, ModelMap modelMap) {
-        CriteriaQuery cq = new CriteriaQuery(TShHospDrugListEntity.class, dataGrid);
+        CriteriaQuery cq = new CriteriaQuery(TShHospDrugListEntityForExport.class, dataGrid);
         org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShHospDrugList, request.getParameterMap());
-        List<TShHospDrugListEntity> tShHospDrugLists = this.tShHospDrugListService.getListByCriteriaQuery(cq, false);
+        List<TShHospDrugListEntityForExport> tShHospDrugLists = this.tShHospDrugListService.getListByCriteriaQuery(cq, false);
         modelMap.put(NormalExcelConstants.FILE_NAME, "医院上传药品列表");
-        modelMap.put(NormalExcelConstants.CLASS, TShHospDrugListEntity.class);
+        modelMap.put(NormalExcelConstants.CLASS, TShHospDrugListEntityForExport.class);
         modelMap.put(NormalExcelConstants.PARAMS, new ExportParams("医院上传药品列表列表", "导出人:" + ResourceUtil.getSessionUser().getRealName(),
                 "导出信息"));
         modelMap.put(NormalExcelConstants.DATA_LIST, tShHospDrugLists);
