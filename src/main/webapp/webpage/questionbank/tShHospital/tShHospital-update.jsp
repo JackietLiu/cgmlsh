@@ -23,14 +23,14 @@
 			 </div>
 		 </div>
 	 </div>
-	 <div class="form-group">
+	 <%--<div class="form-group">
 		 <label for="hospnameeng" class="col-sm-3 control-label">英文名：</label>
 		 <div class="col-sm-7">
 			 <div class="input-group" style="width:100%">
 				 <input id="hospnameeng" name="hospnameeng" value='${tShHospitalPage.hospnameeng}' type="text" maxlength="100" class="form-control input-sm" placeholder="请输入英文名"  ignore="ignore" />
 			 </div>
 		 </div>
-	 </div>
+	 </div>--%>
 	 <div class="form-group">
 		 <label for="hospnameshort" class="col-sm-3 control-label">简称：</label>
 		 <div class="col-sm-7">
@@ -78,6 +78,23 @@
 		 <div class="col-sm-7">
 			 <div class="input-group" style="width:100%">
 				 <t:dictSelect field="regionid" type="list" extendJson="{class:'form-control input-sm'}"   dictTable="t_s_region" dictField="id" dictText="name" dictCondition="where ((pid = 114) or (id = 114))"  hasLabel="false"  title="区域" defaultVal="${tShHospitalPage.regionid}"></t:dictSelect>
+			 </div>
+		 </div>
+	 </div>
+
+	 <div class="form-group">
+		 <label for="tel" class="col-sm-3 control-label">联系人：</label>
+		 <div class="col-sm-7">
+			 <div class="input-group" style="width:100%">
+				 <input id="contact" name="contact" value='${tShHospitalPage.contact}' type="text" maxlength="100" class="form-control input-sm" placeholder="请输入医院联系人"  ignore="ignore" required/>
+			 </div>
+		 </div>
+	 </div>
+	 <div class="form-group">
+		 <label for="tel" class="col-sm-3 control-label">手机号：</label>
+		 <div class="col-sm-7">
+			 <div class="input-group" style="width:100%">
+				 <input id="mobileno" name="mobileno" value='${tShHospitalPage.mobileno}' type="text" maxlength="20" class="form-control input-sm" placeholder="请输入联系人手机号"  ignore="ignore" required/>
 			 </div>
 		 </div>
 	 </div>

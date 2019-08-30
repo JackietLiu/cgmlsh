@@ -1,4 +1,4 @@
-<!--thisisid: tShRuleResultList -->
+<!--thisisid: tShHospitalList -->
 <%@ page language="java" import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="/context/mytags.jsp"%>
 <!DOCTYPE html>
@@ -6,47 +6,44 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>审核结果清单</title>
+<title>医院信息</title>
 <t:base type="jquery,easyui,tools,DatePicker,autocomplete"></t:base>
 <link rel="stylesheet" href="${webRoot}/plug-in/themes/naturebt/css/search-form.css">
 </head>
 <body>
 <div class="easyui-layout" fit="true">
 	<div region="center" style="padding:0px;border:0px">
-		<table id="tShRuleResultList"></table>  
+		<table id="tShHospitalList"></table>  
 	</div>
-	<div id = "tShRuleResultListToolbar">
+	<div id = "tShHospitalListToolbar">
 		<div class="easyui-panel toolbar-search" style="display:none" data-options="doSize:false">
-			<form id="tShRuleResultForm" onkeydown="if(event.keyCode==13){doSearch();return false;}">
-
+			<form id="tShHospitalForm" onkeydown="if(event.keyCode==13){doSearch();return false;}">
 				<div class="seerch-div">
-					<label>上传批号:</label>
+					<label>代码:</label>
 					<div class="search-control">
-						<input class="dts search-inp" type="text" name="auditno" placeholder="请输入上传批号"/>
+						<input class="dts search-inp" type="text" name="hospcode" placeholder="请输入代码"/>
 					</div>
 				</div>
-
-
-				<c:if test="${ empty hospid}">
+				<div class="seerch-div">
+					<label>等级:</label>
+					<div class="search-control">
+						<select name = "hosplevel" class="dts search-inp search-select"></select>
+					</div>
+				</div>
 				<div class="seerch-div">
 					<label>医院名称:</label>
 					<div class="search-control">
-						<%--<select name = "hospid" class="dts search-inp search-select"></select>--%>
-						<t:dictSelect field="hospid" extendJson="{style:'width:100%'}" dictTable="t_sh_hospital" dictField="id" dictText="hospnameshort" dictCondition="where regionid='${regionid}' order by hospnameshort" title="选择医院"></t:dictSelect>
+						<input class="dts search-inp" type="text" name="hospname" placeholder="请输入医院名称"/>
 					</div>
 				</div>
-				</c:if>
-
-
 				<div class="seerch-div">
-					<label style="visibility:visible">查询</label>
-
+					<label style="visibility:hidden">查询</label>
 					<div>
 					<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="doSearch()">
 						<i class="fa fa-search"></i>
 						<span>查询</span>
 					</button>
-
+					
 					<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="resetSearch()">
 						<i class="fa fa-refresh"></i>
 						<span>重置</span>
@@ -55,111 +52,236 @@
 				</div>
 			</form>
 		</div>
-
-
-
 		<div class="toolbar-btn">
 
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('查看','tShRuleResultController.do?goUpdate&load=detail','tShRuleResultList',768,500)">
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="update('查看','tShHospitalController.do?goUpdate&load=detail','tShHospitalList',768,500)">
 				<i class="fa fa-search"></i>
 				<span>查看</span>
 			</button>
 
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="JeecgExcelExport('tShRuleResultController.do?exportXls','tShRuleResultList')">
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="JeecgExcelExport('tShHospitalController.do?exportXls','tShHospitalList')">
 				<i class="fa fa-upload"></i>
 				<span>导出</span>
 			</button>
 
-			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="$('.toolbar-search').slideToggle(function(){$('#tShRuleResultList').datagrid('resize');});">
-				 <i class="fa fa-arrow-circle-left"></i>
-				 <span>检索</span>
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="sendmsg()">
+				<i class="fa fa-envelope-o"></i>
+				<span>一键发送短信通知</span>
+			</button>
+
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="$('.toolbar-search').slideToggle(function(){$('#tShHospitalList').datagrid('resize');});">
+				<i class="fa fa-arrow-circle-left"></i>
+				<span>检索</span>
 			</button>
 		</div>
 	</div>
 </div>
 
 <script>
-var tShRuleResultListdictsData = {};
+var tShHospitalListdictsData = {};
 $(function(){
 	var promiseArr = [];
-	initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_hospital","hospnameshort");
-	initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_rule_info","rulename");
-	/*initDictByCode(tShRuleResultListdictsData,"id",promiseArr,"t_sh_hospital","hospnameshort");*/
+	initDictByCode(tShHospitalListdictsData,"hosplevel",promiseArr,"","");
+	initDictByCode(tShHospitalListdictsData,"isactive",promiseArr,"","");
+	initDictByCode(tShHospitalListdictsData,"id",promiseArr,"t_s_region","name");
 	$.when.apply(null,promiseArr).done(function(){
     	initDatagrid();
-		$('#tShRuleResultList').datagrid('getPager').pagination({
+		$('#tShHospitalList').datagrid('getPager').pagination({
 	        beforePageText: '',
 	        afterPageText: '/{pages}',
 	        displayMsg: '{from}-{to}共 {total}条',
 	        showPageList: true,
 	        showRefresh: true
 	    });
-	    $('#tShRuleResultList').datagrid('getPager').pagination({
+	    $('#tShHospitalList').datagrid('getPager').pagination({
 	        onBeforeRefresh: function(pageNumber, pageSize) {
 	            $(this).pagination('loading');
 	            $(this).pagination('loaded');
 	        }
 	    });
-		//loadSearchFormDicts($("#tShRuleResultForm").find("select[name='hospid']"),"t_sh_hospital","id","select","医院编号");
+		loadSearchFormDicts($("#tShHospitalForm").find("select[name='hosplevel']"),"","hosplevel","select","等级");
 	}).fail(function(){
 		console.log("i'm sorry!it's unkown error that i can't resolve as yet");
 	});
 });
-$(document).ready(function(){
-    var abc = $("#results").width()+17;
-    $("#results").css("min-width", abc).css("padding-right","17px").css("box-sizing","border-box");
 
-    $("#tShRuleResultList").datagrid({
-        onClickRow: function (index, row) {
-        	//alert(row.ruleid)  ;
-            getCustomerList(row.auditno,row.ruleid);
-        }
-    });
-
-});
-function getCustomerList(id,ruleid){
-    parent.getCustomerList(id,ruleid);
-}
 //easyui-datagrid实例化
 function initDatagrid(){
-	var actionUrl = "tShRuleResultController.do?datagrid&hospid=${firsthosp}&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
- 	$('#tShRuleResultList').datagrid({
+	var actionUrl = "tShHospDrugListController.do?unsubmitDatagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,contact,mobileno,";
+ 	$('#tShHospitalList').datagrid({
 		url:actionUrl,
 		idField: 'id', 
+		title: '',
 		loadMsg: '数据加载中...',
 		fit:true,
 		fitColumns:true,
 		striped:true,
 		autoRowHeight: true,
-		pageSize: 10,
+		pageSize: 30,
 		pagination:true,
-		singleSelect:true,
-		pageList:[10,30,50,100],
+		singleSelect:false,
+		pageList:[30,50,100],
 		rownumbers:true,
 		showFooter:true,
 		sortName:'createDate',
 		sortOrder:'desc',
-		toolbar: '#tShRuleResultListToolbar',
+		toolbar: '#tShHospitalListToolbar',
 		frozenColumns:[[]],
 		columns:[[
-			{field:'ck',checkbox:true}
-			,{
-				field : "id",
-				title : "主键",
-				width : 120,
+			{field:'ck',checkbox:true,},
+            {
+                field : "hospname",
+                title : "医院名称",
+                width : 260,
+				halign :"center",
+                sortable: true,
+            },{
+                field : "hospnameshort",
+                title : "简称",
+                width : 180,
+				halign : "center",
+                sortable: true,
+				hidden:true,
+            },{
+                field : "hospnameeng",
+                title : "英文名",
+                width : 120,
+				align : "center",
+                sortable: true,
+				hidden : true
+            },{
+                field : "hospcode",
+                title : "代码",
+                width : 140,
+				align : "center",
+                sortable: true,
+
+            },{
+                field : "hosplevel",
+                title : "等级",
+                width : 60,
+				align : "center",
+                sortable: true,
+                formatter : function(value, rec, index) {
+                    return listDictFormat(value,"hosplevel","");
+                }
+            },{
+				field : "address",
+				title : "地址",
+				width : 160,
+				halign : "center",
 				sortable: true,
 				hidden:true,
-			}
-			,{
+			},{
+				field : "contact",
+				title : "联系人",
+				width : 80,
+				halign : "center",
+				sortable: true,
+			},{
+				field : "mobileno",
+				title : "手机号",
+				width : 120,
+				halign : "center",
+				sortable: true,
+			},
+			{
+				field : "regionid",
+				title : "区域",
+				width : 60,
+				align : "center",
+				sortable: true,
+				formatter : function(value, rec, index) {
+					return listDictFormat(value,"id","t_s_region");
+				}
+			},{
+				field : "createDate",
+				title : "创建日期",
+				width : 120,
+				align : "center",
+				sortable: true,
+				hidden:true,
+				formatter : function(value, rec, index) {
+					return new Date().format('yyyy-MM-dd', value);
+				}
+			},{
 				field : "createName",
 				title : "创建人名称",
 				width : 120,
+				align : "center",
 				sortable: true,
 				hidden:true,
 			}
 			,{
-				field : "createDate",
-				title : "创建日期",
+				field : "tel",
+				title : "电话",
+				width : 100,
+				align : "center",
+				sortable: true,
+			}
+			,{
+				field : "fax",
+				title : "传真",
+				width : 100,
+				align : "center",
+				sortable: true,
+				hidden : true
+			}
+			,{
+				field : "thepercent",
+				title : "基药占比",
+				width : 120,
+				align : "center",
+				sortable: true,
+				hidden : true
+			}
+			,{
+				field : "id",
+				title : "id",
+				width : 120,
+				align : "center",
+				sortable: true,
+				hidden:true,
+			}
+			,{
+				field : "isactive",
+				title : "是否在用",
+				width : 80,
+				align : "center",
+				sortable: true,
+				formatter : function(value, rec, index) {
+					return listDictFormat(value,"isactive","");
+				}
+			}
+			,{
+				field : "logofilename",
+				title : "图标名称",
+				width : 80,
+				align : "center",
+				sortable: true,
+				formatter:function(value,rec,index){
+					return "<img src='"+value+"' width='30' height='30'>";
+			 	},
+				hidden : true
+			}
+			,{
+				field : "memo",
+				title : "备注",
+				width : 120,
+				halign : "center",
+				sortable: true,
+				hidden : true
+			}
+			,{
+				field : "regcode",
+				title : "注册码",
+				width : 120,
+				sortable: true,
+				hidden : true,
+			}
+			,{
+				field : "updateDate",
+				title : "更新日期",
 				width : 120,
 				sortable: true,
 				hidden:true,
@@ -175,69 +297,30 @@ function initDatagrid(){
 				hidden:true,
 			}
 			,{
-				field : "updateDate",
-				title : "更新日期",
+				field : "versionname",
+				title : "系统版本",
 				width : 120,
 				sortable: true,
-				hidden:true,
-				formatter : function(value, rec, index) {
-					return new Date().format('yyyy-MM-dd', value);
-				}
+                hidden : true,
 			}
 			,{
-				field : "ruleid",
-				title : "规则名称",
-				width : 120,
-				sortable: true,
-				formatter : function(value, rec, index) {
-					return listDictFormat(value,"id","t_sh_rule_info");
-				}
-			}
-			,{
-				field : "hospid",
-				title : "医院名称",
-				width : 120,
-				sortable: true,
-				formatter : function(value, rec, index) {
-					return listDictFormat(value,"id","t_sh_hospital");
-				}
-			}
-			,{
-				field : "auditno",
-				title : "审核编号",
-				width : 120,
-				sortable: true,
-			}
-			,{
-				field : "memo",
-				title : "备注",
-				width : 120,
-				sortable: true,
-			}
-			,{
-				field : "resultdesc",
-				title : "结果描述",
-				width : 230,
-				sortable: true,
-			}
-			,{
-	            field: 'opt',title: '操作',width: 150,hidden:true,
+	            field: 'opt',title: '操作',width: 150,align : "center",hidden : true,
 	            formatter: function(value, rec, index) {
 	                if (!rec.id) {
 	                    return '';
 	                }
 	                var href = '';
-	                href += "<a href='#'   class='ace_button'  onclick=delObj('tShRuleResultController.do?doDel&id=" + rec.id + "','tShRuleResultList')>  <i class=' fa fa-trash-o'></i> ";
+	                href += "<a href='#' class='ace_button'  onclick=delObj('tShHospitalController.do?doDel&id=" + rec.id + "','tShHospitalList')>  <i class=' fa fa-trash-o'></i> ";
 	                href += "删除</a>&nbsp;";
 	                return href;
 	            }
 	        }
 		]],
 		onLoadSuccess: function(data) {
-            $("#tShRuleResultList").datagrid("clearSelections");
+            $("#tShHospitalList").datagrid("clearSelections");
             if (!false) {
                 if (data.total && data.rows.length == 0) {
-                    var grid = $('#tShRuleResultList');
+                    var grid = $('#tShHospitalList');
                     var curr = grid.datagrid('getPager').data("pagination").options.pageNumber;
                     grid.datagrid({
                         pageNumber: (curr - 1)
@@ -249,13 +332,13 @@ function initDatagrid(){
 }
 //easyui-datagrid重新加载
 function reloadTable() {
-	 $('#tShRuleResultList').datagrid('reload');
+	 $('#tShHospitalList').datagrid('reload');
 }
 //easyui-datagrid搜索
 function doSearch(){
-	var queryParams = $('#tShRuleResultList').datagrid('options').queryParams;
-	var actionUrl = "tShRuleResultController.do?datagrid&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
-	$('#tShRuleResultForm').find(':input').each(function() {
+	var queryParams = $('#tShHospitalList').datagrid('options').queryParams;
+	var actionUrl = "tShHospitalController.do?unsubmitDatagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,contact,mobileno,";
+	$('#tShHospitalForm').find(':input').each(function() {
 		var paramName = $(this).attr('name');
 		if(!!paramName){
 			if("checkbox"== $(this).attr("type")){
@@ -268,15 +351,15 @@ function doSearch(){
 		}
     });
 	
-    $('#tShRuleResultList').datagrid({
+    $('#tShHospitalList').datagrid({
         url: actionUrl,
         pageNumber: 1
     });
 }
 //easyui-datagrid重置搜索
 function resetSearch(){
-    var queryParams = $('#tShRuleResultList').datagrid('options').queryParams;
-    $('#tShRuleResultForm').find(':input').each(function() {
+    var queryParams = $('#tShHospitalList').datagrid('options').queryParams;
+    $('#tShHospitalForm').find(':input').each(function() {
     	if("checkbox"== $(this).attr("type")){
     		$("input:checkbox[name='" + $(this).attr('name') + "']").attr('checked',false);
 		}else if("radio"== $(this).attr("type")){
@@ -286,14 +369,14 @@ function resetSearch(){
 		}
         queryParams[$(this).attr('name')] = "";
     });
-    $('#tShRuleResultForm').find("input[type='checkbox']").each(function() {
+    $('#tShHospitalForm').find("input[type='checkbox']").each(function() {
         $(this).attr('checked', false);
     });
-    $('#tShRuleResultForm').find("input[type='radio']").each(function() {
+    $('#tShHospitalForm').find("input[type='radio']").each(function() {
         $(this).attr('checked', false);
     });
-    var actionUrl = "tShRuleResultController.do?datagrid&hospid=${firsthosp}&field=id,createName,createDate,updateName,updateDate,ruleid,hospid,auditno,memo,resultdesc,";
-    $('#tShRuleResultList').datagrid({
+    var actionUrl = "tShHospitalController.do?unsubmitDatagrid&field=address,createDate,createName,fax,hospcode,hosplevel,hospname,hospnameeng,hospnameshort,id,isactive,logofilename,memo,regcode,tel,thepercent,updateDate,updateName,versionname,regionid,contact,mobileno,";
+    $('#tShHospitalList').datagrid({
         url: actionUrl,
         pageNumber: 1
     });
@@ -331,7 +414,7 @@ function loadSearchFormDicts(obj,table,code,type,name){
 	if(code=="id"){
 		dictKey = table+code;
 	}
-	var arr = tShRuleResultListdictsData[dictKey];
+	var arr = tShHospitalListdictsData[dictKey];
 	for(var a = 0;a < arr.length;a++){
 		if("select"== type){
 			if(a==0){
@@ -372,7 +455,7 @@ function listDictFormat(value,code,table){
 	if(code=="id"){
 		dictKey = table+code;
 	}
-	var dicts = tShRuleResultListdictsData[dictKey];
+	var dicts = tShHospitalListdictsData[dictKey];
     var valArray = value.split(',');
     var showVal = '';
     if (valArray.length > 1) {
@@ -401,6 +484,19 @@ function listDictFormat(value,code,table){
     	showVal = value;
     }
     return showVal;
+}
+
+function sendmsg() {
+	$.ajax({
+		url:"tShHospitalController.do?sendmsgs",
+		dataType:"json",
+		success:function (ret) {
+			$.messager.alert("提示：",ret.msg)
+		},
+		error:function (err) {
+
+		}
+	})
 }
 </script>
 </body>

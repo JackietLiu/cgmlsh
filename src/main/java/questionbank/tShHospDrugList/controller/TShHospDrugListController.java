@@ -3,6 +3,7 @@ package questionbank.tShHospDrugList.controller;
 import org.apache.commons.utils.StringUtil3;
 
 import org.hibernate.criterion.Restrictions;
+import org.jeecgframework.core.common.hibernate.qbc.PagerUtil;
 import org.jeecgframework.core.util.ContextHolderUtils;
 import org.jeecgframework.core.util.ExceptionUtil;
 import org.jeecgframework.core.util.MyBeanUtils;
@@ -13,6 +14,7 @@ import questionbank.tShHospDrugList.entity.TShHospDrugListEntityForExport;
 import questionbank.tShHospDrugList.service.TShHospDrugListServiceI;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,11 +98,18 @@ public class TShHospDrugListController extends BaseController {
         HttpSession session = ContextHolderUtils.getSession();
         String hospid = (String) session.getAttribute("hospid");
         String sql = "select auditno from t_sh_hosp_import where hospid='" + hospid + "' and thestatus in ('0','10') limit 1 ";
-
+        String sql2 = "select auditno from t_sh_hosp_import where hospid='" + hospid + "' and thestatus in ('99','20') limit 1 ";
+        String theauditno2 = tShHospImportService.getSingleValue(sql2);
         String theauditno = tShHospImportService.getSingleValue(sql);
         if (StringUtil3.isNotEmpty(theauditno)) {
             j.setMsg("本院有未审核的上传记录,编号为[" + theauditno + "],请确认是否继续上传,如果继续上传则未审核的记录会全部删除!");
             j.setSuccess(false);
+            return j;
+        }
+        if (StringUtil3.isNotEmpty(theauditno2)) {
+            j.setMsg("本院的上传记录,编号为[" + theauditno2 + "],已全部审核完成，无法重新上传");
+            j.setSuccess(false);
+            j.setObj("close");
             return j;
         }
         j.setSuccess(true);
@@ -214,6 +223,38 @@ public class TShHospDrugListController extends BaseController {
 
 //zczadd end modify  on  2019/2/28 10:10
 
+
+    @RequestMapping(params = "unsubmitDatagrid")
+    public void unsubmitDatagrid(TShHospitalEntity tShHospital, HttpServletRequest request, HttpServletResponse response, DataGrid dataGrid) {
+        CriteriaQuery cq = new CriteriaQuery(TShHospitalEntity.class, dataGrid);
+        //查询条件组装器
+        org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShHospital, request.getParameterMap());
+        String regionid = (String) request.getSession().getAttribute("regionid");
+        String wheresql = "";
+        if (StringUtil3.isNotEmpty(regionid)){
+            wheresql = " and regionid='"+regionid+"'";
+        }
+        String sql = "select s.* from t_sh_hospital s where (select count(1) as num from t_sh_hosp_import t where s.id = t.hospid and t.thestatus > 0) = 0" + wheresql;
+        List<TShHospitalEntity> result = systemService.findObjForJdbc(sql,TShHospitalEntity.class);
+        if (result.size() > 0){
+            int pagesize = cq.getPageSize();
+            int curPageNo = PagerUtil.getcurPageNo(result.size(),cq.getCurPage(),pagesize);
+            List<Map<String, Object>> listMwo = systemService.findForJdbc(sql, curPageNo, pagesize);
+            cq.getDataGrid().setResults(listMwo);
+            cq.getDataGrid().setTotal(result.size());
+        }
+
+        try {
+            //自定义追加查询条件
+
+        } catch (Exception e) {
+            throw new BusinessException(e.getMessage());
+        }
+
+        //cq.add();
+        //this.systemService.getDataGridReturn(cq, true);
+        TagUtil.datagrid(response, dataGrid);
+    }
     /**
      * 删除医院上传药品列表
      *
@@ -349,6 +390,19 @@ public class TShHospDrugListController extends BaseController {
         }
         return new ModelAndView("questionbank/tShHospDrugList/tShHospDrugList-update");
     }
+    /**
+     * 医院上传药品列表编辑页面跳转
+     *
+     * @return
+     */
+    @RequestMapping(params = "goUnsubmit")
+    public ModelAndView goUnsubmit(TShHospDrugListEntity tShHospDrugList, HttpServletRequest req) {
+        if (StringUtil3.isNotEmpty(tShHospDrugList.getId())) {
+            tShHospDrugList = tShHospDrugListService.getEntity(TShHospDrugListEntity.class, tShHospDrugList.getId());
+            req.setAttribute("tShHospDrugListPage", tShHospDrugList);
+        }
+        return new ModelAndView("questionbank/tShHospDrugList/unsubmithosp");
+    }
 
     /**
      * 导入功能跳转
@@ -368,10 +422,14 @@ public class TShHospDrugListController extends BaseController {
      * @param response
      */
     @RequestMapping(params = "exportXls")
-    public String exportXls(TShHospDrugListEntity tShHospDrugList, HttpServletRequest request, HttpServletResponse response
+    public String exportXls(TShHospDrugListEntityForExport tShHospDrugList, HttpServletRequest request, HttpServletResponse response
             , DataGrid dataGrid, ModelMap modelMap) {
         CriteriaQuery cq = new CriteriaQuery(TShHospDrugListEntityForExport.class, dataGrid);
         org.jeecgframework.core.extend.hqlsearch.HqlGenerateUtil.installHql(cq, tShHospDrugList, request.getParameterMap());
+        if (StringUtil3.isNotEmpty(request.getSession().getAttribute("hospid"))){
+            cq.eq("hospid",request.getSession().getAttribute("hospid"));
+        }
+        cq.add();
         List<TShHospDrugListEntityForExport> tShHospDrugLists = this.tShHospDrugListService.getListByCriteriaQuery(cq, false);
         modelMap.put(NormalExcelConstants.FILE_NAME, "医院上传药品列表");
         modelMap.put(NormalExcelConstants.CLASS, TShHospDrugListEntityForExport.class);

@@ -7,8 +7,7 @@ import questionbank.tShHospDrugList.entity.TShHospDrugListEntity;
 import questionbank.tShHospImport.entity.TShHospImportEntity;
 import questionbank.tShHospImport.service.TShHospImportServiceI;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -39,14 +38,13 @@ import org.jeecgframework.core.util.ResourceUtil;
 import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import java.util.Map;
-import java.util.HashMap;
 import org.jeecgframework.core.util.ExceptionUtil;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import questionbank.tShHospImportBack.entity.TShHospImportBackEntity;
 import questionbank.tShNotfitruleDetail.entity.TShNotfitruleDetailEntity;
 import questionbank.tShRoleRegionMatch.entity.TShRoleRegionMatchEntity;
 import questionbank.tShRuleInfo.entity.TShRuleInfoEntity;
@@ -117,6 +115,34 @@ public class TShHospImportController extends BaseController {
 		return j ;
 	}
 
+	/**
+	 *  tShHospImportController.do?back_submit
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(params = "back_submit")
+	@ResponseBody
+	public AjaxJson back_submit( HttpServletRequest request) {
+		String message = "驳回成功!";
+		AjaxJson j = new AjaxJson();
+		String userid = ResourceUtil.getSessionUser().getId();
+		String hospid = request.getParameter("hospid");
+		String auditno = request.getParameter("auditno");
+
+		String sql2="update t_sh_hosp_import set thestatus='0' where hospid='" +hospid+"' and auditno='" +auditno+"'"  ;
+		int count = tShHospImportService.updateBySqlString(sql2);
+		//插入退回记录表
+		if (count > 0){
+			TShHospImportBackEntity ib = new TShHospImportBackEntity();
+			ib.setAuditno(auditno);
+			ib.setBackdate(new Date());
+			ib.setHospid(hospid);
+			ib.setUserid(userid);
+			systemService.save(ib);
+		}
+
+		return j ;
+	}
 	@RequestMapping(params = "func_self_audit")
 	@ResponseBody
 	public AjaxJson func_self_audit( HttpServletRequest request) {

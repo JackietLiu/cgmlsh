@@ -37,7 +37,7 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	private String registerno;
 
 	/**采购序号*/
-	@Excel(name="采购序号",width=50)
+	//@Excel(name="采购序号",width=50)
 	private java.lang.String buyno;
 	/**药品名称*/
 	//@Excel(name="药品名称",width=15)

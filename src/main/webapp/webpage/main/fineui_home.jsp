@@ -79,7 +79,9 @@
     <div class="alert alert-warning">
         <span>已提交：</span><a><label id="submited" class="label label-success"></label></a>
         <span class="topspan">未提交：</span><a><label id="unsubmit" class="label label-danger"></label></a>
-        <a onclick="sendmsg()">给未提交的医院下发短信通知</a>
+      <%--  <c:if test="${fn:contains(currentroleids,'8a8ab0b246dc81120146dc8181870050')}">--%>
+            <a onclick="checkUnsubmit();">查看未上传或未提交的医疗机构</a>
+       <%-- </c:if>--%>
         <span class="topspan">已审核：</span><a><label id="audited" class="label label-success"></label></a>
     </div>
     <div class="row">
@@ -359,21 +361,8 @@
             chart_percent.setOption(option, true);
 
         });
-
-        function sendmsg() {
-            $.ajax({
-                url:"tShHospitalController.do?sendmsgs",
-                dataType:"json",
-                success:function (ret) {
-                    console.log(JSON.stringify(ret));
-                },
-                error:function (err) {
-
-                }
-            })
-            /*$.post("http://sms.api.ums86.com:8899/sms/Api/Send.do?SpCode=222831&LoginName=nt_wsw&Password=wsw931616&MessageContent=短信测试，请勿回复&UserNumber=19907030880&SerialNumber=00000000000000000001&ScheduleTime=&f=1",function(data,status){
-                alert("Data: " + data + "nStatus: " + status);
-            },"jsonp");*/
+        function checkUnsubmit() {
+           openwindow("未上传或未提交的医疗机构名单","tShHospDrugListController.do?goUnsubmit","unsubmitList",1000,800);
         }
     </script>
 </body>

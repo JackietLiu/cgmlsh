@@ -130,7 +130,10 @@
 				<i class="fa fa-upload"></i>
 				<span>审核</span>
 			</button>
-
+			<button type="button" class="tool-btn tool-btn-default tool-btn-xs" onclick="back_submit()">
+				<i class="fa fa-upload"></i>
+				<span>驳回提交</span>
+			</button>
 		</div>
 	</div>
 </div>
@@ -206,7 +209,7 @@ function initDatagrid(){
 			{
 				field : "hospid",
 				title : "医院简称",
-				width : 120,
+				width : 280,
 				sortable: true,
 				formatter : function(value, rec, index) {
 					return listDictFormat(value,"id","t_sh_hospital");
@@ -216,12 +219,12 @@ function initDatagrid(){
 			{
 				field : "auditno",
 				title : "上传批号",
-				width : 120,
+				width : 160,
 				sortable: true,
 			},{
 				field : "thestatus",
 				title : "状态",
-				width : 100,
+				width : 80,
 				sortable: true,
 				formatter : function(value, rec, index) {
 					return listDictFormat(value,"thestatus","");
@@ -230,7 +233,26 @@ function initDatagrid(){
 			,{
 				field : "createDate",
 				title : "上传日期",
-				width : 80,
+				width : 120,
+				sortable: true,
+				formatter : function(value, rec, index) {
+					return new Date().format('yyyy-MM-dd', value);
+				}
+			}
+
+			,{
+				field : "commitdate",
+				title : "提交日期",
+				width : 120,
+				sortable: true,
+				formatter : function(value, rec, index) {
+					return new Date().format('yyyy-MM-dd', value);
+				}
+			}
+			,{
+				field : "auditdate",
+				title : "审核日期",
+				width : 120,
 				sortable: true,
 				formatter : function(value, rec, index) {
 					return new Date().format('yyyy-MM-dd', value);
@@ -239,37 +261,20 @@ function initDatagrid(){
 			,{
 				field : "createName",
 				title : "上传人",
-				width : 80,
+				width : 120,
 				sortable: true,
-			}
-			,{
-				field : "commitdate",
-				title : "提交日期",
-				width : 80,
-				sortable: true,
-				formatter : function(value, rec, index) {
-					return new Date().format('yyyy-MM-dd', value);
-				}
 			}
 			,{
 				field : "commitname",
 				title : "提交人",
-				width : 80,
+				width : 120,
 				sortable: true,
 			}
-			,{
-				field : "auditdate",
-				title : "审核日期",
-				width : 80,
-				sortable: true,
-				formatter : function(value, rec, index) {
-					return new Date().format('yyyy-MM-dd', value);
-				}
-			}
+
 			,{
 				field : "auditname",
 				title : "审核人",
-				width : 80,
+				width : 120,
 				sortable: true,
 			}
 
@@ -291,11 +296,13 @@ function initDatagrid(){
 				title : "备注",
 				width : 120,
 				sortable: true,
+				hidden:true
 			},{
 				field : "year",
 				title : "年份",
 				width : 50,
 				sortable: true,
+				hidden:true
 			}
 
 			,{
@@ -303,16 +310,18 @@ function initDatagrid(){
 				title : "月份",
 				width : 50,
 				sortable: true,
+				hidden:true
 			}
 			,{
 				field : "thescore",
 				title : "得分",
 				width : 50,
 				sortable: true,
+				hidden:true
 			}
 
 			,{
-	            field: 'opt',title: '操作',width: 150,
+	            field: 'opt',title: '操作',width: 150,hidden:true,
 	            formatter: function(value, rec, index) {
 	                if (!rec.id) {
 	                    return '';
@@ -588,6 +597,58 @@ function func_batch_audit(){
 
 
 }
+function back_submit(){
+
+	var msg=  "对不起，请至少选择一条记录，才可以审核该医院的导入信息！";
+	// ifselect_single_row("tShHospImportList","bootstrap-table",msg);
+	var a = $("#tShHospImportList" ).datagrid('getSelections');
+	if (a.length == 0) {
+		$.messager.alert('提信息示', msg,"info");
+		return;
+	}else if (a.length == 1) {
+		for (var i=0; i < a.length;i++){
+			var thestatus=a[i].thestatus;
+
+			if(thestatus=="20"){
+				var msgtt="已审核记录无法驳回";
+				$.messager.alert('提信息示', msgtt,"info");
+				return;
+			}
+			if(thestatus!="10"){
+				var msgere="只能选择已提交的医院";
+				$.messager.alert('提信息示', msgere,"info");
+				return;
+			}
+			if(thestatus=="10"){
+				var hospname = listDictFormat(a[i].hospid,"id","t_sh_hospital");
+				var finalaction="tShHospImportController.do?back_submit&hospid=" +a[i].hospid +"&auditno=" +a[i].auditno;
+
+				$.ajax({
+					cache:true,
+					type:"post",
+					url:finalaction,
+					data:"",
+					dataType:"json",
+					success: function(data){
+
+						$("#tShHospImportList" ).datagrid("reload");
+					}
+				})
+
+
+
+			}
+		}
+
+
+	}else {
+
+		$.messager.alert('提信息示', "驳回操作只能针对一家医院","info");
+	}
+
+
+}
+
 
 
 

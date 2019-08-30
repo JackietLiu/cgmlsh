@@ -23,14 +23,14 @@
 			 </div>
 		 </div>
 	 </div>
-	 <div class="form-group">
+	 <%--<div class="form-group">
 		 <label for="hospnameeng" class="col-sm-3 control-label">英文名：</label>
 		 <div class="col-sm-7">
 			 <div class="input-group" style="width:100%">
 				 <input id="hospnameeng" name="hospnameeng" type="text" maxlength="100" class="form-control input-sm" placeholder="请输入英文名"  ignore="ignore" />
 			 </div>
 		 </div>
-	 </div>
+	 </div>--%>
 	 <div class="form-group">
 		 <label for="hospnameshort" class="col-sm-3 control-label">简称：</label>
 		 <div class="col-sm-7">
@@ -80,6 +80,22 @@
 		 </div>
 	 </div>
 	 <div class="form-group">
+		 <label for="tel" class="col-sm-3 control-label">联系人：</label>
+		 <div class="col-sm-7">
+			 <div class="input-group" style="width:100%">
+				 <input id="contact" name="contact" type="text" maxlength="20" class="form-control input-sm" placeholder="请输入医院联系人"  ignore="ignore" />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="form-group">
+		 <label for="tel" class="col-sm-3 control-label">手机号：</label>
+		 <div class="col-sm-7">
+			 <div class="input-group" style="width:100%">
+				 <input id="mobileno" name="mobileno" type="text" maxlength="20" class="form-control input-sm" placeholder="请输入联系人手机号"  ignore="ignore" />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="form-group">
 		 <label for="tel" class="col-sm-3 control-label">电话：</label>
 		 <div class="col-sm-7">
 			 <div class="input-group" style="width:100%">
@@ -99,7 +115,7 @@
 		 <label for="thepercent" class="col-sm-3 control-label">基药占比：</label>
 		 <div class="col-sm-7">
 			 <div class="input-group" style="width:100%">
-				 <input id="thepercent" name="thepercent" type="text" maxlength="5" class="form-control input-sm" placeholder="请输入百分比"  ignore="ignore" />
+				 <input id="thepercent" name="thepercent" type="text" maxlength="5" class="form-control input-sm" placeholder="请输入百分比" value="0"  ignore="ignore" />
 			 </div>
 		 </div>
 	 </div>
@@ -109,7 +125,7 @@
 		<label for="isactive" class="col-sm-3 control-label">是否在用：</label>
 		<div class="col-sm-7">
 			<div class="input-group" style="width:100%">
-				<t:dictSelect field="isactive" type="radio" extendJson="{class:'i-checks'}"  typeGroupCode="isactive"  hasLabel="false"  title="在用"></t:dictSelect>		
+				<t:dictSelect field="isactive" type="radio" extendJson="{class:'i-checks'}"  typeGroupCode="isactive" defaultVal="1" hasLabel="false"  title="在用"></t:dictSelect>
 			</div>
 		</div>
 	</div>
@@ -131,14 +147,14 @@
 		</div>
 	</div>
 
-	<div class="form-group">
+<%--	<div class="form-group">
 		<label for="versionname" class="col-sm-3 control-label">系统版本：</label>
 		<div class="col-sm-7">
 			<div class="input-group" style="width:100%">
 				<input id="versionname" name="versionname" type="text" maxlength="20" class="form-control input-sm" placeholder="请输入系统版本"  ignore="ignore" />
 			</div>
 		</div>
-	</div>
+	</div>--%>
 </form>
 <script type="text/javascript">
 	var subDlgIndex = '';

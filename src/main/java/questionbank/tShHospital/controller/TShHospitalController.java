@@ -1,4 +1,9 @@
 package questionbank.tShHospital.controller;
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.NameValuePair;
+import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.commons.httpclient.params.HttpMethodParams;
+import org.apache.commons.utils.StringUtil3;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -9,6 +14,9 @@ import questionbank.tShHospital.entity.TShHospitalEntity;
 import questionbank.tShHospital.entity.TShHospitalModel;
 import questionbank.tShHospital.service.TShHospitalServiceI;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -168,88 +176,112 @@ public class TShHospitalController extends BaseController {
 	 */
 	@RequestMapping(params = "sendmsgs")
 	@ResponseBody
-	public AjaxJson sendmsgs(HttpServletRequest request) {
+	public AjaxJson sendmsgs(HttpServletRequest request) throws UnsupportedEncodingException, MalformedURLException {
 		String message = null;
 		AjaxJson j = new AjaxJson();
 		String wheresql = "";
 		/*获取区县信息*/
 		String regionid = (String) request.getSession().getAttribute("regionid");
-		if (!regionid.isEmpty()){
+		if (StringUtil3.isNotEmpty(regionid)){
 			wheresql = " and s.regionid='"+regionid+"'";
 		}
 		/*查询未提交的医院以及医院名称*/
-		String selectsql = "select s.* from t_sh_hospital s where (select count(1) as num from t_sh_hosp_import t where s.id = t.hospid) = 0" + wheresql;
+		String selectsql = "select s.* from t_sh_hospital s where (select count(1) as num from t_sh_hosp_import t where s.id = t.hospid and t.thestatus > 0) = 0" + wheresql;
 		String userNumber = "";
-		String userNumber2 = "";
+		//String userNumber2 = "";
 		String url2 = "";
 		List<TShHospitalEntity> res = systemService.findObjForJdbc(selectsql,TShHospitalEntity.class);
-		if (res.size() <= 1000) {
-			for (int i = 0;i < res.size();i++) {
-				userNumber += res.get(i).getMobileno()+",";
-			}
-			userNumber = userNumber.substring(0,userNumber.length()-1);
-		}else{
-			for (int i = 0;i < 1000;i++) {
-				userNumber = userNumber + res.get(i).getMobileno()+",";
-			}
-			for (int i = 1000;i < res.size();i++){
-				userNumber2 += res.get(i).getMobileno()+",";
-			}
-			userNumber = userNumber.substring(0,userNumber.length()-1);
-			userNumber2 = userNumber2.substring(0,userNumber2.length()-1);
-		}
+		if (res.size() == 0){
+		    message = "没有需要通知的医疗机构！！！";
+        }else{
+            for (int i = 0;i < res.size();i++) {
+                userNumber += res.get(i).getMobileno()+",";
+            }
+            userNumber = userNumber.substring(0,userNumber.length()-1);
 
-		/*设置提示语*/
-		String messageContent = "系统检测到您的药品列表还未上传，请登录目录审核系统提交医院上传药品列表";
-		/*生成20位随机数*/
-		Date d=new Date();
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmss");
-		String randomnum = sdf.format(d);
-		String haomiao=String.valueOf(System.nanoTime());
-		randomnum = randomnum+haomiao.substring(haomiao.length()-6,haomiao.length());
+            /*1000条以上分两次请求*/
+           /* if (res.size() <= 1000) {
+                for (int i = 0;i < res.size();i++) {
+                    userNumber += res.get(i).getMobileno()+",";
+                }
+                userNumber = userNumber.substring(0,userNumber.length()-1);
+            }else{
+                for (int i = 0;i < 1000;i++) {
+                    userNumber = userNumber + res.get(i).getMobileno()+",";
+                }
+                for (int i = 1000;i < res.size();i++){
+                    userNumber2 += res.get(i).getMobileno()+",";
+                }
+                userNumber = userNumber.substring(0,userNumber.length()-1);
+                userNumber2 = userNumber2.substring(0,userNumber2.length()-1);
+            }*/
+            /*设置提示语*/
+			Calendar c = Calendar.getInstance();//可以对每个时间域单独修改
+			int year = c.get(Calendar.YEAR);
+			int month = c.get(Calendar.MONTH)+1;
+			int date = c.get(Calendar.DATE);
+			String messageContent = "系统于"+year+"年"+month+"月"+date+"日检测到由您负责的机构药品采购目录还未做上传或提交。请登录南通市医疗机构药品采购目录审核系统上传或提交本机构的药品目录。本消息由系统发出，请勿回复。";
+            String msgContent = new String(messageContent.getBytes(),"GBK");
+            /*生成20位随机数*/
+            Date d=new Date();
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmss");
+            String randomnum = sdf.format(d);
+            String haomiao=String.valueOf(System.nanoTime());
+            randomnum = randomnum+haomiao.substring(haomiao.length()-6,haomiao.length());
+            String url = "http://sms.api.ums86.com:8899/sms/Api/Send.do";
+            url = url.replaceAll("-","").replaceAll("null","0");
+            HttpClient httpClient = new HttpClient();
+            PostMethod post = new PostMethod(url);
+			httpClient.getParams().setParameter(HttpMethodParams.HTTP_CONTENT_CHARSET, "GBK");
+			post.addParameter("SpCode", "222831");
+			post.addParameter("LoginName", "nt_wsw");
+			post.addParameter("Password", "wsw931616");
+			post.addParameter("MessageContent", msgContent);
+			post.addParameter("UserNumber", userNumber);
+			post.addParameter("SerialNumber", randomnum);
+			post.addParameter("ScheduleTime", "");
+			post.addParameter("ExtendAccessNum", "");
+			post.addParameter("f", "1");
 
-		String url = "http://sms.api.ums86.com:8899/sms/Api/Send.do?SpCode=222831&LoginName=nt_wsw&Password=wsw931616&MessageContent=短信测试，请勿回复&UserNumber=19907030880&SerialNumber="+randomnum+"&ScheduleTime=&f=1";
-		if (!userNumber2.isEmpty()){
-			/*设置提示语*/
-			String messageContent2 = "";
-			/*生成20位随机数*/
-			Date d2=new Date();
-			SimpleDateFormat sdf2=new SimpleDateFormat("yyyyMMddhhmmss");
-			String randomnum2 = sdf.format(d2);
-			String haomiao2 = String.valueOf(System.nanoTime());
-			randomnum = randomnum + haomiao.substring(haomiao.length()-6,haomiao.length());
-			url2 = "http://sms.api.ums86.com:8899/sms/Api/Send.do?SpCode=222831&LoginName=nt_wsw&Password=wsw931616&MessageContent=短信测试，请勿回复&UserNumber=19907030880&SerialNumber="+randomnum+"&ScheduleTime=&f=1";
-		}
-		CloseableHttpClient client = null;
-		CloseableHttpResponse response = null;
 
-		try{
-			HttpGet httpGet = new HttpGet(url);
-			client = HttpClients.createDefault();
-			response = client.execute(httpGet);
-			HttpEntity entity = response.getEntity();
-			String result = EntityUtils.toString(entity);
-			System.out.println(result.substring(7,8));
-			if (result.substring(7,8).equals("0")){
-				message = "短信发送成功";
-			}
-			if (!url2.isEmpty()){
-				HttpGet httpGet2 = new HttpGet(url2);
-				client = HttpClients.createDefault();
-				response = client.execute(httpGet2);
-				HttpEntity entity2 = response.getEntity();
-				String result2 = EntityUtils.toString(entity2);
-				System.out.println(result.substring(7,8));
-				if (result2.substring(7,8).equals("0")){
-					message = "短信发送成功";
-				}
-			}
-		//	systemService.addLog(message, Globals.Log_Type_DEL, Globals.Log_Leavel_INFO);
-		}catch(Exception e){
-			e.printStackTrace();
-			message = "短信发送失败";
-			throw new BusinessException(e.getMessage());
-		}
+           /* if (StringUtil3.isNotEmpty(userNumber2)){
+                userNumber2 = new String(userNumber2.getBytes(),"GB2312");
+                *//*设置提示语*//*
+                String messageContent2 = "";
+                *//*生成20位随机数*//*
+                Date d2=new Date();
+                SimpleDateFormat sdf2=new SimpleDateFormat("yyyyMMddhhmmss");
+                String randomnum2 = sdf.format(d2);
+                String haomiao2 = String.valueOf(System.nanoTime());
+                randomnum = randomnum + haomiao.substring(haomiao.length()-6,haomiao.length());
+                //url2 = "http://sms.api.ums86.com:8899/sms/Api/Send.do?SpCode=222831&LoginName=nt_wsw&Password=wsw931616&MessageContent="+msgContent+"&UserNumber="+userNumber2+"&SerialNumber="+randomnum+"&f=1";
+            }*/
+            CloseableHttpClient client = null;
+            CloseableHttpResponse response = null;
+
+            try{
+               int status = httpClient.executeMethod(post);
+				//System.out.println(status);
+               if (status == 200) {
+				   String body = new String(post.getResponseBody(),"GBK");
+				  // System.out.println(body.substring(7,8));
+				   if (body.substring(7,8).equals("0")){
+					   message = "短信发送成功";
+				   }else{
+				   	   message = body;
+				   }
+
+
+               }
+
+            }catch(Exception e){
+                e.printStackTrace();
+                message = "短信发送失败";
+                throw new BusinessException(e.getMessage());
+            }
+
+        }
+
 		j.setMsg(message);
 		return j;
 	}

@@ -207,11 +207,12 @@ function selfCheck() {
 			}
 		});
 	} else {
-		alert("只能选择一行后操作");
+		alert("请先选择一行数据后操作");
 	}
 }
 
 function ImportXls() {
+
 	var finalaction="tShHospDrugListController.do?func_beforeimport";
 	$.ajax({
 		cache:true,
@@ -220,11 +221,17 @@ function ImportXls() {
 		data:"",
 		dataType:"json",
 		success: function(data){
+			var openstatus = JSON.parse(JSON.stringify(data.obj));
 			if(!data.success ){
-				$.messager.confirm("操作提示", data.msg, function (data) {
+				$.messager.confirm("操作提示", data.msg, function (ret) {
 
-					if(data) {
-						openuploadwin('Excel导入', 'tShHospDrugListController.do?upload', "tShHospDrugListList");
+					if(ret) {
+						if (openstatus == "close"){
+							return ;
+						} else {
+							openuploadwin('Excel导入', 'tShHospDrugListController.do?upload', "tShHospDrugListList");
+						}
+
 					}else {
 						return ;
 					}

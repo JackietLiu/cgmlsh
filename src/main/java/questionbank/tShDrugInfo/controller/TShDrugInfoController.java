@@ -1,9 +1,10 @@
 package questionbank.tShDrugInfo.controller;
+import org.apache.commons.utils.StringUtil3;
+import org.jeecgframework.core.common.dao.jdbc.JdbcDao;
 import questionbank.tShDrugInfo.entity.TShDrugInfoEntity;
 import questionbank.tShDrugInfo.service.TShDrugInfoServiceI;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -34,14 +35,13 @@ import org.jeecgframework.core.util.ResourceUtil;
 import java.io.IOException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import java.util.Map;
-import java.util.HashMap;
 import org.jeecgframework.core.util.ExceptionUtil;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import questionbank.tShHospDrugList.entity.TShHospDrugListEntity;
 
 /**   
  * @Title: Controller  
@@ -240,6 +240,26 @@ public class TShDrugInfoController extends BaseController {
 		message = "药品目录维护更新成功";
 		TShDrugInfoEntity t = tShDrugInfoService.get(TShDrugInfoEntity.class, tShDrugInfo.getId());
 		try {
+			if(!t.getRegisterno().equals(tShDrugInfo.getRegisterno()) || !t.getDrugform().equals(tShDrugInfo.getDrugform()) || !t.getEnterprisename().equals(tShDrugInfo.getEnterprisename()) || !t.getGg().equals(tShDrugInfo.getGg())){
+				/*如果某个药品的批准文号、厂家、剂型或规格其中有一项改变的话，更新医院上传目录*/
+				/*修改批准文号的同时，修改上传目录*/
+				List<TShHospDrugListEntity> hds = systemService.findByProperty(TShHospDrugListEntity.class,"registerno",t.getRegisterno());
+				//List<TShHospDrugListEntity> nhds = new ArrayList<TShHospDrugListEntity>();
+				for (TShHospDrugListEntity hd : hds){
+					hd.setRegisterno(tShDrugInfo.getRegisterno());
+					hd.setDrugform(tShDrugInfo.getDrugform());
+					hd.setEnterprisename(tShDrugInfo.getEnterprisename());
+					hd.setGg(tShDrugInfo.getGg());
+					hd.setBuyno(tShDrugInfo.getBuyno());
+					hd.setUpdateDate(new Date());
+					hd.setUpdateName(ResourceUtil.getSessionUser().getUserName());
+					systemService.updateEntitie(hd);
+					//nhds.add(hd);
+				}
+				//systemService.batchSave(nhds);
+
+
+			}
 			MyBeanUtils.copyBeanNotNull2Bean(tShDrugInfo, t);
 			tShDrugInfoService.saveOrUpdate(t);
 			systemService.addLog(message, Globals.Log_Type_UPDATE, Globals.Log_Leavel_INFO);
