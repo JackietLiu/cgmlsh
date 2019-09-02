@@ -15,86 +15,240 @@
  <form id="formobj" action="tShDrugValueInfoController.do?doUpdate" class="form-horizontal validform" role="form"  method="post">
 	<input type="hidden" id="btn_sub" class="btn_sub"/>
 	<input type="hidden" id="id" name="id" value="${tShDrugValueInfoPage.id}"/>
-	<div class="form-group">
-		<label for="commonname" class="col-sm-3 control-label">药品名称：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="commonname" name="commonname" value='${tShDrugValueInfoPage.commonname}' type="text" maxlength="100" class="form-control input-sm" placeholder="请输入药品名称"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="drugform" class="col-sm-3 control-label">剂型：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="drugform" name="drugform" value='${tShDrugValueInfoPage.drugform}' type="text" maxlength="20" class="form-control input-sm" placeholder="请输入剂型"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="gg" class="col-sm-3 control-label">规格：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="gg" name="gg" value='${tShDrugValueInfoPage.gg}' type="text" maxlength="100" class="form-control input-sm" placeholder="请输入规格"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="enterprisename" class="col-sm-3 control-label">生产厂家：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="enterprisename" name="enterprisename" value='${tShDrugValueInfoPage.enterprisename}' type="text" maxlength="100" class="form-control input-sm" placeholder="请输入生产厂家"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="registerno" class="col-sm-3 control-label">批准文号：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="registerno" name="registerno" value='${tShDrugValueInfoPage.registerno}' type="text" maxlength="40" class="form-control input-sm" placeholder="请输入批准文号"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="buyno" class="col-sm-3 control-label">产品编号：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="buyno" name="buyno" value='${tShDrugValueInfoPage.buyno}' type="text" maxlength="20" class="form-control input-sm" placeholder="请输入产品编号"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="ntresult" class="col-sm-3 control-label">南通入围结果：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="ntresult" name="ntresult" value='${tShDrugValueInfoPage.ntresult}' type="text" maxlength="20" class="form-control input-sm" placeholder="请输入南通入围结果"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="jsresult" class="col-sm-3 control-label">江苏入围结果：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="jsresult" name="jsresult" value='${tShDrugValueInfoPage.jsresult}' type="text" maxlength="20" class="form-control input-sm" placeholder="请输入江苏入围结果"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="isbasedrug" class="col-sm-3 control-label">国家基药：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="isbasedrug" name="isbasedrug" value='${tShDrugValueInfoPage.isbasedrug}' type="text" maxlength="20" class="form-control input-sm" placeholder="请输入国家基药"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
-	<div class="form-group">
-		<label for="inprice" class="col-sm-3 control-label">购进单价：</label>
-		<div class="col-sm-7">
-			<div class="input-group" style="width:100%">
-				<input id="inprice" name="inprice" value='${tShDrugValueInfoPage.inprice}' type="text" maxlength="10" class="form-control input-sm" placeholder="请输入购进单价"  ignore="ignore" />
-			</div>
-		</div>
-	</div>
+
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 合同名称：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="contractname" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.contractname}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 交易场：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="place" type="text" class="form-control" maxlength="50" value = "${tShDrugValueInfoPage.place}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 采购序号：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="buyno" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.buyno}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 评审分组：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="groupname" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.groupname}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 通用名：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="commonname" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.commonname}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 商品名：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="tradename" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.tradename}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 剂型：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="drugform" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.drugform}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 规格：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="gg" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.gg}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 转换比：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="rationnum" type="text" class="form-control" maxlength="10" value = "${tShDrugValueInfoPage.rationnum}"  datatype="n"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 最小包装单位：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="minpcs" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.minpcs}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 包装材质：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="pkccz" type="text" class="form-control" maxlength="50" value = "${tShDrugValueInfoPage.pkccz}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 生产企业全称：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="enterprisename" type="text" class="form-control" maxlength="255" value = "${tShDrugValueInfoPage.enterprisename}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 供应价：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="suppprice" type="text" class="form-control" maxlength="10" value = "${tShDrugValueInfoPage.suppprice}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label" style="padding-top:12px">
+				 状态：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <div style="padding-top:12px">
+					 <t:dictSelect field="isactive" defaultVal = "${tShDrugValueInfoPage.isactive}" extendJson="{class:'i-checks'}" type="radio" hasLabel="false"  title="状态"  typeGroupCode="isactive" ></t:dictSelect>
+				 </div>
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 经销商简称：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="agencyshortname" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.agencyshortname}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 经销商全称：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="agencyname" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.agencyname}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 备注：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="memo" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.memo}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 产品备注：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="drugmemo" type="text" class="form-control" maxlength="20" value = "${tShDrugValueInfoPage.drugmemo}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 批准文号：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="registerno" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.registerno}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 南通入围结果：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="ntresult" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.ntresult}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 江苏入围结果：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="jsresult" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.jsresult}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 国家基药：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="isbasedrug" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.isbasedrug}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+	 <div class="bt-item col-md-6 col-sm-6">
+		 <div class="row">
+			 <div class="col-md-3 col-sm-3 col-xs-3 bt-label">
+				 购进单价：
+			 </div>
+			 <div class="col-md-9 col-sm-9 col-xs-9 bt-content">
+				 <input name="inprice" type="text" class="form-control" maxlength="100" value = "${tShDrugValueInfoPage.inprice}"  ignore="ignore"  />
+			 </div>
+		 </div>
+	 </div>
+
 </form>
 <script type="text/javascript">
 	var subDlgIndex = '';

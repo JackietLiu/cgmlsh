@@ -33,55 +33,74 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 	/**id*/
 	private java.lang.String id;
 
-	@Excel(name="批准文号",width=50)
-	private String registerno;
-
+	/**批准文号*/
+	@Excel(name="批准文号",width=15)
+	private java.lang.String registerno;
+	/**合同名称*/
+	//@Excel(name="项目名称",width=15)
+	private java.lang.String contractname;
+	/**交易场*/
+	//@Excel(name="交易场",width=15)
+	private java.lang.String place;
 	/**采购序号*/
-	//@Excel(name="采购序号",width=50)
+	//@Excel(name="采购序号",width=15)
 	private java.lang.String buyno;
 	/**药品名称*/
-	//@Excel(name="药品名称",width=15)
+	//@Excel(name="通用名",width=15)
 	private java.lang.String commonname;
-	/**药品规格*/
-	//@Excel(name="药品规格",width=15)
-	private java.lang.String gg;
-	/**单位*/
-	//@Excel(name="单位",width=15)
-	private java.lang.String pcs;
-	/**厂家*/
-	//@Excel(name="厂家",width=15)
-	private java.lang.String enterprisename;
+	/**商品名*/
+	//@Excel(name="商品名",width=15)
+	private java.lang.String tradename;
 	/**剂型*/
 	//@Excel(name="剂型",width=15)
 	private java.lang.String drugform;
-	/**购进单价*/
-	//@Excel(name="购进单价",width=15)
-	private java.lang.Double inprice;
-	/**入库数量*/
-	//@Excel(name="入库数量",width=15)
-	private java.lang.Double innum;
+	/**药品规格*/
+	//@Excel(name="规格",width=15)
+	private java.lang.String gg;
 	/**转换比*/
 	//@Excel(name="转换比",width=15)
 	private java.lang.Integer rationnum;
-	/**更新人名称*/
-	//@Excel(name="更新人名称",width=15)
-	private java.lang.String updateName;
-	/**更新日期*/
-	//@Excel(name="更新日期",width=15,format = "yyyy-MM-dd")
-	private java.util.Date updateDate;
+	/**单位*/
+	//@Excel(name="单位",width=15)
+	private java.lang.String pcs;
+	/**包装材质*/
+	//@Excel(name="包装材质",width=15)
+	private java.lang.String pkccz;
+	/**厂家*/
+	//@Excel(name="生产企业",width=15)
+	private java.lang.String enterprisename;
+	/**购进单价*/
+	//@Excel(name="供应价",width=15)
+	private java.lang.Double inprice;
+	/**最小单位报价*/
+	//@Excel(name="最小单位报价",width=15)
+	private java.lang.String minunitprice;
+	/**入库数量*/
+	//@Excel(name="入库数量",width=15)
+	private java.lang.Double innum;
+	/**产品备注*/
+	//@Excel(name="基药",width=15)
+	private java.lang.String drugmemo;
+	/**评审编号*/
+	//@Excel(name="评审编号",width=15)
+	private java.lang.String groupno;
+	/**评审分组*/
+	//@Excel(name="评审分组",width=15)
+	private java.lang.String groupname;
+	/**导入批号*/
+	//@Excel(name="导入批号",width=15)
+	private java.lang.String auditno;
 	/**创建日期*/
-	//@Excel(name="创建日期",width=15,format = "yyyy-MM-dd")
 	private java.util.Date createDate;
 	/**创建人名称*/
-	//@Excel(name="创建人名称",width=15)
 	private java.lang.String createName;
 	/**医院ID*/
-	//@Excel(name="医院编号",width=20,dictTable ="t_sh_hospital",dicCode ="id",dicText ="hospnameshort")
-	//@Excel(name="医院编号",width=20)
+	//@Excel(name="医院ID",width=15,dictTable ="t_sh_hospital",dicCode ="id",dicText ="hospnameshort")
 	private java.lang.String hospid;
-	/**导入批号*/
-	//@Excel(name="导入批号",width=20)
-	private java.lang.String auditno;
+	/**更新日期*/
+	private java.util.Date updateDate;
+	/**更新人名称*/
+	private java.lang.String updateName;
 
 	@Column(name ="registerno",nullable=true,length=50)
 	public String getRegisterno() {
@@ -92,7 +111,69 @@ public class TShHospDrugListEntity implements java.io.Serializable {
 		this.registerno = registerno;
 	}
 
+	public String getContractname() {
+		return contractname;
+	}
 
+	public void setContractname(String contractname) {
+		this.contractname = contractname;
+	}
+
+	public String getPlace() {
+		return place;
+	}
+
+	public void setPlace(String place) {
+		this.place = place;
+	}
+
+	public String getTradename() {
+		return tradename;
+	}
+
+	public void setTradename(String tradename) {
+		this.tradename = tradename;
+	}
+
+	public String getPkccz() {
+		return pkccz;
+	}
+
+	public void setPkccz(String pkccz) {
+		this.pkccz = pkccz;
+	}
+
+	public String getMinunitprice() {
+		return minunitprice;
+	}
+
+	public void setMinunitprice(String minunitprice) {
+		this.minunitprice = minunitprice;
+	}
+
+	public String getDrugmemo() {
+		return drugmemo;
+	}
+
+	public void setDrugmemo(String drugmemo) {
+		this.drugmemo = drugmemo;
+	}
+
+	public String getGroupno() {
+		return groupno;
+	}
+
+	public void setGroupno(String groupno) {
+		this.groupno = groupno;
+	}
+
+	public String getGroupname() {
+		return groupname;
+	}
+
+	public void setGroupname(String groupname) {
+		this.groupname = groupname;
+	}
 
 	/**
 	 *方法: 取得java.lang.String
