@@ -89,7 +89,7 @@
             alert("请先选择一条记录,才可以增加选中记录的下一级项目信息！");
             return ;
         }
-        document.getElementById("myframe").src= "<%=request.getContextPath() %>/tShDrugClassController.do?goTreeAdd&id="+nodes[0].id;
+        document.getElementById("myframe").src= "<%=request.getContextPath() %>/tShDrugClassController.do?goTreeAdd&pid="+nodes[0].id;
     }
 
     function delDict(){

@@ -174,7 +174,7 @@ public class HqlGenerateUtil {
 							}
 							cq.add(dis);							
 						}else{
-						
+
 							HqlRuleEnum rule = PageValueConvertRuleEnum.convert(value);
 
 	//						if(HqlRuleEnum.LIKE.equals(rule)&&(!(value+"").contains("*"))&&!"class java.lang.Integer".contains(type)){

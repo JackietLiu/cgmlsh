@@ -97,6 +97,9 @@ public class JeecgFormDemoController extends BaseController {
 		return new ModelAndView("com/jeecg/demo/form_uitag");
 	}
 
+
+
+
 	/**
 	 * 二维码生成功能
 	 * @param request

@@ -1,4 +1,5 @@
 package questionbank.tShDrugClass.controller;
+import org.jeecgframework.core.annotation.JAuth;
 import questionbank.tShDrugClass.entity.TShDrugClassEntity;
 import questionbank.tShDrugClass.service.TShDrugClassServiceI;
 
@@ -157,6 +158,7 @@ public class TShDrugClassController extends BaseController {
 		String message = null;
 		AjaxJson j = new AjaxJson();
 		message = "药品目录删除成功";
+
 		try{
 			for(String id:ids.split(",")){
 				TShDrugClassEntity tShDrugClass = systemService.getEntity(TShDrugClassEntity.class, 
@@ -334,6 +336,7 @@ public class TShDrugClassController extends BaseController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(params = "importExcel", method = RequestMethod.POST)
 	@ResponseBody
+
 	public AjaxJson importExcel(HttpServletRequest request, HttpServletResponse response) {
 		AjaxJson j = new AjaxJson();
 		
